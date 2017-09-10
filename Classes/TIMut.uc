@@ -145,6 +145,7 @@ private function buildList()
 			RepItem.Price=-1;
 			RepItem.DefPath=CustomItem;
 			ServerItems.AddItem( RepItem);
+			`log("===TIM=== CustomItem:"@CustomItem);
 		}
 	}
 
@@ -187,9 +188,6 @@ simulated static final function bool AddWeapons(array<SItem> RepItems)
 	if( SaleItemsLength < 1 )
 		return False;
 
-	foreach RepItems(RepItem)
-		`log("===TIM=== from server:"@RepItem.DefPath);
-
 	number=0;
 	foreach RepItems(RepItem)
 	{
@@ -202,7 +200,7 @@ simulated static final function bool AddWeapons(array<SItem> RepItems)
 			{
 				TI.SaleItems.AddItem( item);
 
-				`log("===TIM=== adding("$item.ItemID$"):"@RepItem.DefPath);
+				`log("===TIM=== adding:"@RepItem.DefPath);
 				number++;
 			}
 		}
