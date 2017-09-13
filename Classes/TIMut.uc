@@ -23,6 +23,7 @@ var private bool bRepReady;
 var private array<SItem> ServerItems;
 
 var config array<string> CustomItems;
+var private array< Class<KFPerk> >    AssociatedPerkClasses;
 
 
 private final function CreateRepLink(Controller C)
@@ -118,8 +119,9 @@ function GetSeamlessTravelActorList(bool bEntry, out array<Actor> Actors)
 }
 
 
-simulated event PostBeginPlay()
+/*simulated*/ event PostBeginPlay()
 {
+	`log("===TIM=== PostBeginPlay()");
 	Super.PostBeginPlay();
 
 //	CustomItems.addItem( "Schneidzekk.KFWeapDef_Schneidzekk");
@@ -144,7 +146,7 @@ private function buildList()
 	{
 		if( ServerItems.Find('DefPath',CustomItem) < 0 )
 		{
-			RepItem.Price=-1;
+			RepItem.TraderId=-1;
 			RepItem.DefPath=CustomItem;
 			ServerItems.AddItem( RepItem);
 			number++;
@@ -156,7 +158,7 @@ private function buildList()
 
 }
 
-simulated function addWeaponsTimer()
+/*simulated*/ function addWeaponsTimer()
 {
 
 	if( AddWeapons(ServerItems) )
@@ -199,30 +201,43 @@ simulated static final function bool AddWeapons(array<SItem> RepItems)
 		item=BuildWeapon( RepItem.DefPath);
 
 
-		if( item.WeaponDef != none )
+		if( item.WeaponDef == none )
 		{
-			if( TI.SaleItems.Find('ClassName',item.ClassName) < 0 )
+			if( WI.NetMode == NM_DedicatedServer )
 			{
-				TI.SaleItems.AddItem( item);
-
-				`log("===TIM=== adding:"@RepItem.DefPath);
-				number++;
+				`log("===TIM=== dropping:"@RepItem.DefPath);
+				RepItems.RemoveItem( RepItem);
+				continue;
+			}
+			else
+			{
+				item.ClassName=name(RepItem.DefPath);
+				item.BlocksRequired=99;
+				item.AssociatedPerkClasses=default.AssociatedPerkClasses;
 			}
 		}
-		else
+
+		if( TI.SaleItems.Find('ClassName',item.ClassName) >= 0 )
 		{
-			`log("===TIM=== dropping:"@RepItem.DefPath);
+			`log("===TIM=== duplicate:"@RepItem.DefPath);
 			if( WI.NetMode == NM_DedicatedServer )
 				RepItems.RemoveItem( RepItem);
+			continue;
 		}
+
+
+		`log("===TIM=== adding:"@RepItem.DefPath);
+		RepItem.TraderId=SaleItemsLength+number;
+// insert item if RepItem.TraderId >= 0 ?
+		TI.SaleItems.AddItem( item);
+		number++;
+
 	}
 
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-//	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-
-	LogInternal("===TIM=== extra Weapons added to trader inventory:"@number);
+	`log("===TIM=== custom Weapons added to trader inventory:"@number);
 
 	foreach TI.SaleItems(item)
 		`log("===TIM=== SaleItem["$item.ItemID$"]:"@item.ClassName);
@@ -287,6 +302,7 @@ defaultproperties
 	Name="Default__TIMut"
 	ObjectArchetype=KFMutator'KFGame.Default__KFMutator'
 
+        AssociatedPerkClasses(0)=none;
 
 	bAlwaysRelevant=true
 	RemoteRole=ROLE_SimulatedProxy

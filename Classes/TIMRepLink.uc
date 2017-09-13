@@ -10,7 +10,7 @@ class TIMRepLink extends ReplicationInfo;
 struct SItem
 {
 	var string DefPath;
-	var int Price;
+	var int TraderId;
 };
 
 var /*private*/ array<SItem> ClientItems;
@@ -30,7 +30,7 @@ private final function SyncItems()
     {
         Item = ClientItems[CurrentIndex];
         
-        ClientSyncItem(Item.DefPath, Item.Price);
+        ClientSyncItem(Item.DefPath, Item.TraderId);
         
         ++CurrentIndex;
     }
@@ -52,12 +52,12 @@ private final function CleanupRepLink(bool bClient)
     Destroy();
 }
 
-private reliable client final function ClientSyncItem(string DefPath, int Price)
+private reliable client final function ClientSyncItem(string DefPath, int TraderId)
 {
     local SItem Item;
     
     Item.DefPath = DefPath;
-    Item.Price = Price;
+    Item.TraderId = TraderId;
     
     ClientItems.AddItem(Item);
 }
