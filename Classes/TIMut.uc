@@ -136,8 +136,10 @@ private function buildList()
 {
 	local string CustomItem;
 	local SItem RepItem;
+	local int number;
 
 
+	number=0;
 	foreach CustomItems(CustomItem)
 	{
 		if( ServerItems.Find('DefPath',CustomItem) < 0 )
@@ -145,9 +147,12 @@ private function buildList()
 			RepItem.Price=-1;
 			RepItem.DefPath=CustomItem;
 			ServerItems.AddItem( RepItem);
-			`log("===TIM=== CustomItem:"@CustomItem);
+			number++;
+//			`log("===TIM=== CustomItem:"@CustomItem);
 		}
 	}
+
+	`log("===TIM=== config Weapons found:"@number);
 
 }
 
@@ -206,7 +211,7 @@ simulated static final function bool AddWeapons(array<SItem> RepItems)
 		}
 		else
 		{
-			`log("===TIM=== unable to add:"@RepItem.DefPath);
+			`log("===TIM=== dropping:"@RepItem.DefPath);
 			if( WI.NetMode == NM_DedicatedServer )
 				RepItems.RemoveItem( RepItem);
 		}
@@ -215,7 +220,9 @@ simulated static final function bool AddWeapons(array<SItem> RepItems)
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-	`log("===TIM=== Weapons added to trader inventory:"@number);
+//	`log("===TIM=== custom Weapons added to trader inventory:"@number);
+
+	LogInternal("===TIM=== extra Weapons added to trader inventory:"@number);
 
 	foreach TI.SaleItems(item)
 		`log("===TIM=== SaleItem["$item.ItemID$"]:"@item.ClassName);
