@@ -23,7 +23,9 @@ var private bool bRepReady;
 var private array<SItem> ServerItems;
 
 var config array<string> CustomItems;
-var private array< Class<KFPerk> >    AssociatedPerkClasses;
+var private const class<KFWeapon> LemonWepClass;
+var private const class<KFWeaponDefinition> LemonWepDefClass;
+var private int OriginalInventorySize;
 
 
 private final function CreateRepLink(Controller C)
@@ -119,49 +121,25 @@ function GetSeamlessTravelActorList(bool bEntry, out array<Actor> Actors)
 }
 
 
-/*simulated*/ event PostBeginPlay()
+
+function InitMutator(string Options, out string ErrorMessage)
 {
-	`log("===TIM=== PostBeginPlay()");
-	Super.PostBeginPlay();
+	`log("===TIM=== InitMutator()");
+	super.InitMutator( Options, ErrorMessage );
 
 //	CustomItems.addItem( "Schneidzekk.KFWeapDef_Schneidzekk");
 //	SaveConfig();
 
-	buildList();
-
 	SetTimer( 0.1f, true, nameof(addWeaponsTimer));
 
-
 }
 
-private function buildList()
-{
-	local string CustomItem;
-	local SItem RepItem;
-	local int number;
 
 
-	number=0;
-	foreach CustomItems(CustomItem)
-	{
-		if( ServerItems.Find('DefPath',CustomItem) < 0 )
-		{
-			RepItem.TraderId=-1;
-			RepItem.DefPath=CustomItem;
-			ServerItems.AddItem( RepItem);
-			number++;
-//			`log("===TIM=== CustomItem:"@CustomItem);
-		}
-	}
-
-	`log("===TIM=== config Weapons found:"@number);
-
-}
-
-/*simulated*/ function addWeaponsTimer()
+private function addWeaponsTimer()
 {
 
-	if( AddWeapons(ServerItems) )
+	if( AddWeapons() )
 	{
 		ClearTimer( nameof(addWeaponsTimer));
 		SyncClients();
@@ -169,13 +147,14 @@ private function buildList()
 
 }
 
-simulated static final function bool AddWeapons(array<SItem> RepItems)
+
+final function bool AddWeapons()
 {
 	local WorldInfo WI;
 	local KFGameReplicationInfo KFGRI;
 	local KFGFxObject_TraderItems TI;
 	local STraderItem item;
-	local int number, SaleItemsLength;
+	local int i, index, number, SaleItemsLength;
 	local SItem RepItem;
 
 
@@ -195,52 +174,56 @@ simulated static final function bool AddWeapons(array<SItem> RepItems)
 	if( SaleItemsLength < 1 )
 		return False;
 
+	if( OriginalInventorySize < 0 )
+		OriginalInventorySize=SaleItemsLength;
+
+
 	number=0;
-	foreach RepItems(RepItem)
+//	for( i=0; i < CustomItems.Length; i++ )
+	for( i=SaleItemsLength-OriginalInventorySize; i < CustomItems.Length; i++ )
 	{
-		item=BuildWeapon( RepItem.DefPath);
 
+		`log("===TIM=== CustomItem["$i$"]:"@CustomItems[i]);
 
-		if( item.WeaponDef == none )
+		item=BuildWeapon( CustomItems[i]);
+
+		// item not on server?
+//		if( item.WeaponDef == none )
+//		if( item.ClassName == Default.LemonWepClass.Name )
+//		{
+//			`log("===TIM=== dropping CustomItem["$i$"]:"@CustomItems[i]);
+//			continue;
+//		}
+
+		// item already in trader inventory?
+		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
+		if( index >= 0 )
 		{
-			if( WI.NetMode == NM_DedicatedServer )
-			{
-				`log("===TIM=== dropping:"@RepItem.DefPath);
-				RepItems.RemoveItem( RepItem);
-				continue;
-			}
-			else
-			{
-				item.ClassName=name(RepItem.DefPath);
-				item.BlocksRequired=99;
-				item.AssociatedPerkClasses=default.AssociatedPerkClasses;
-			}
-		}
-
-		if( TI.SaleItems.Find('ClassName',item.ClassName) >= 0 )
-		{
-			`log("===TIM=== duplicate:"@RepItem.DefPath);
-			if( WI.NetMode == NM_DedicatedServer )
-				RepItems.RemoveItem( RepItem);
+			`log("===TIM=== duplicate CustomItem["$i$"]:"@CustomItems[i]);
+			`log("===TIM=== original SaleItem["$index$"]:"@TI.SaleItems[index].ClassName);
 			continue;
 		}
 
-
-		`log("===TIM=== adding:"@RepItem.DefPath);
 		RepItem.TraderId=SaleItemsLength+number;
-// insert item if RepItem.TraderId >= 0 ?
-		TI.SaleItems.AddItem( item);
+		RepItem.DefPath=CustomItems[i];
+		ServerItems.AddItem( RepItem);
 		number++;
 
+		`log("===TIM=== added CustomItem["$i$"]:"@CustomItems[i]);
+
+		TI.SaleItems.AddItem( item);
+
 	}
+
 
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-
 	foreach TI.SaleItems(item)
 		`log("===TIM=== SaleItem["$item.ItemID$"]:"@item.ClassName);
+
+	`log("===TIM=== custom Weapons added to trader inventory:"@number);
+
 
 	return True;
 }
@@ -254,26 +237,34 @@ simulated static function STraderItem BuildWeapon(string CI)
 
 
 	CTI.WeaponDef=none;
+	CTI.BlocksRequired=99;
 
-	WeaponDef=class<KFWeaponDefinition>(DynamicLoadObject(CI,class'Class'));;
+	WeaponDef=class<KFWeaponDefinition>(DynamicLoadObject(CI,class'Class'));
 	if( WeaponDef == none )
-		return CTI;
+//		return CTI;
+		WeaponDef=Default.LemonWepDefClass;
 
-	WeaponClass=class<KFWeapon>(DynamicLoadObject(WeaponDef.Default.WeaponClassPath,class'Class'));;
+	WeaponClass=class<KFWeapon>(DynamicLoadObject(WeaponDef.Default.WeaponClassPath,class'Class'));
 	if( WeaponClass == none )
-		return CTI;
+	{
+//		return CTI;
+		WeaponDef=Default.LemonWepDefClass;
+		WeaponClass=Default.LemonWepClass;
+
+	}
 
 	CTI.WeaponDef=WeaponDef;
 	CTI.ClassName=WeaponClass.Name;
 
-//	if( class<KFWeap_DualBase>(WeaponClass) != none && class<KFWeap_DualBase>(WeaponClass).Default.SingleClass != none )
-//		CTI.SingleClassName=class<KFWeap_DualBase>(WeaponClass).Default.SingleClass.Name;
-//	else
-//		CTI.SingleClassName='';
-//	if( WeaponClass.Default.DualClass != none )
-//		CTI.DualClassName=WeaponClass.Default.DualClass.Name;
-//	else
-//		CTI.DualClassName='';
+	if( class<KFWeap_DualBase>(WeaponClass) != none && class<KFWeap_DualBase>(WeaponClass).Default.SingleClass != none )
+		CTI.SingleClassName=class<KFWeap_DualBase>(WeaponClass).Default.SingleClass.Name;
+	else
+		CTI.SingleClassName='';
+
+	if( WeaponClass.Default.DualClass != none )
+		CTI.DualClassName=WeaponClass.Default.DualClass.Name;
+	else
+		CTI.DualClassName='';
 
 	CTI.AssociatedPerkClasses=WeaponClass.Static.GetAssociatedPerkClasses();
 
@@ -302,7 +293,9 @@ defaultproperties
 	Name="Default__TIMut"
 	ObjectArchetype=KFMutator'KFGame.Default__KFMutator'
 
-        AssociatedPerkClasses(0)=none;
+	OriginalInventorySize=-1
+	LemonWepClass=Class'TIM.KFWeap_NOT_Available'
+	LemonWepDefClass=Class'TIM.KFWeapDef_Unavailable'
 
 	bAlwaysRelevant=true
 	RemoteRole=ROLE_SimulatedProxy
