@@ -27,8 +27,8 @@ DefaultProperties
 {
 	WeaponClassPath="TIM.KFWeap_NOT_Available"
 
-	BuyPrice=999999
-	AmmoPricePerMag=999999
+	BuyPrice=99999
+	AmmoPricePerMag=99999
 //	ImagePath="WEP_UI_KRISS_TEX.UI_WeaponSelect_KRISS"
 
 	EffectiveRange=0

@@ -23,7 +23,7 @@ defaultproperties
 
 	// Inventory
 	InventorySize=99
-	GroupPriority=00
+	GroupPriority=0
 	AssociatedPerkClasses(0)=class'KFPerk_Monster'
 
 }
