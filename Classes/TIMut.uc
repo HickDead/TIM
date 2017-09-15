@@ -199,17 +199,18 @@ final function bool AddWeapons()
 		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
 		if( index >= 0 )
 		{
-			`log("===TIM=== duplicate CustomItem["$i$"]:"@CustomItems[i]);
-			`log("===TIM=== original SaleItem["$index$"]:"@TI.SaleItems[index].ClassName);
+			`log("===TIM=== duplicate of SaleItem["$index$"]:"@TI.SaleItems[index].ClassName);
 			continue;
 		}
 
 		RepItem.TraderId=SaleItemsLength+number;
 		RepItem.DefPath=CustomItems[i];
+		if( item.ClassName == Default.LemonWepClass.Name )
+			RepItem.DefPath="TIM.KFWeapDef_Unavailable";
 		ServerItems.AddItem( RepItem);
 		number++;
 
-		`log("===TIM=== added CustomItem["$i$"]:"@CustomItems[i]);
+		`log("===TIM=== adding SaleItem["$SaleItemsLength+number$"]:"@item.ClassName);
 
 		TI.SaleItems.AddItem( item);
 
