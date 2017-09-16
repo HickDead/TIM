@@ -70,9 +70,10 @@ private reliable client final function ClientSyncFinished()
 
 	if( ! AddWeapons() )
 		SetTimer( 0.1f, true, nameof(addWeaponsTimer));
+	else
+	 	CleanupRepLink(true);
 
 
-    CleanupRepLink(true);
 }
 
 
@@ -80,7 +81,10 @@ simulated function addWeaponsTimer()
 {
 
 	if( AddWeapons() )
+	{
 		ClearTimer( nameof(addWeaponsTimer));
+	 	CleanupRepLink(true);
+	}
 
 }
 
