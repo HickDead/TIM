@@ -1,3 +1,4 @@
+
 /*
  *  Trader Inventory Mutator
  *
@@ -22,10 +23,9 @@ var private array<SClient> RepClients;
 var private bool bRepReady;
 var private array<SItem> ServerItems;
 
-var config array<string> CustomItems;
-var private const class<KFWeapon> LemonWepClass;
-var private const class<KFWeaponDefinition> LemonWepDefClass;
 var private int OriginalInventorySize;
+var config array<string> CustomItems;
+
 
 
 private final function CreateRepLink(Controller C)
@@ -122,10 +122,14 @@ function GetSeamlessTravelActorList(bool bEntry, out array<Actor> Actors)
 
 
 
-function InitMutator(string Options, out string ErrorMessage)
+event PostBeginPlay()
 {
-	`log("===TIM=== InitMutator()");
-	super.InitMutator( Options, ErrorMessage );
+	`log("===TIM=== PostBeginPlay()");
+	super.PostBeginPlay();
+	if( WorldInfo.Game.BaseMutator == None )
+		WorldInfo.Game.BaseMutator=Self;
+	else
+		WorldInfo.Game.BaseMutator.AddMutator( Self);
 
 //	CustomItems.addItem( "Schneidzekk.KFWeapDef_Schneidzekk");
 //	SaveConfig();
@@ -154,7 +158,7 @@ final function bool AddWeapons()
 	local KFGameReplicationInfo KFGRI;
 	local KFGFxObject_TraderItems TI;
 	local STraderItem item;
-	local int i, index, number, SaleItemsLength;
+	local int i, index, number, saleItemsLength, freeID;
 	local SItem RepItem;
 
 
@@ -170,61 +174,68 @@ final function bool AddWeapons()
 	if( TI == none )
 		return False;
 
-	SaleItemsLength=TI.SaleItems.Length;
-	if( SaleItemsLength < 1 )
+	saleItemsLength=TI.SaleItems.Length;
+	if( saleItemsLength < 1 )
 		return False;
 
 	if( OriginalInventorySize < 0 )
-		OriginalInventorySize=SaleItemsLength;
+		OriginalInventorySize=saleItemsLength;
 
+	// find highest ItemID in use
+	freeID=-1;
+	foreach TI.SaleItems(item)
+		if( item.ItemID > freeID )
+			freeID=item.ItemID;
+	freeID++;
 
 	number=0;
-//	for( i=0; i < CustomItems.Length; i++ )
-	for( i=SaleItemsLength-OriginalInventorySize; i < CustomItems.Length; i++ )
+	for( i=saleItemsLength-OriginalInventorySize; i < CustomItems.Length; i++ )
 	{
 
 		`log("===TIM=== CustomItem["$i$"]:"@CustomItems[i]);
-
 		item=BuildWeapon( CustomItems[i]);
+		item.ItemID=freeID+number;
 
 		// item not on server?
-//		if( item.WeaponDef == none )
-//		if( item.ClassName == Default.LemonWepClass.Name )
-//		{
-//			`log("===TIM=== dropping CustomItem["$i$"]:"@CustomItems[i]);
-//			continue;
-//		}
-
-		// item already in trader inventory?
-		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
-		if( index >= 0 )
+		if( item.WeaponDef == none )
 		{
-			`log("===TIM=== duplicate of SaleItem["$index$"]:"@TI.SaleItems[index].ClassName);
+			`log("===TIM=== dropping unknown CustomItem["$i$"]:"@CustomItems[i]);
 			continue;
 		}
 
-		RepItem.TraderId=SaleItemsLength+number;
+		// item ID already in trader inventory?
+		index=TI.SaleItems.Find('ItemID',item.ItemId);
+		if( index >= 0 )
+		{
+			`log("===TIM=== skipping present SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+			continue;
+		}
+
+		// item ClassName already in trader inventory?
+		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
+		if( index >= 0 )
+		{
+			`log("===TIM=== skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+			continue;
+		}
+
 		RepItem.DefPath=CustomItems[i];
-		if( item.ClassName == Default.LemonWepClass.Name )
-			RepItem.DefPath="TIM.KFWeapDef_Unavailable";
+		RepItem.TraderId=item.ItemID;
 		ServerItems.AddItem( RepItem);
-		number++;
 
-		`log("===TIM=== adding SaleItem["$SaleItemsLength+number$"]:"@item.ClassName);
-
+		`log("===TIM=== adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
 		TI.SaleItems.AddItem( item);
-
+		number++;
 	}
 
 
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-	foreach TI.SaleItems(item)
-		`log("===TIM=== SaleItem["$item.ItemID$"]:"@item.ClassName);
+	for( i=0; i < TI.SaleItems.Length; i++ )
+		`log("===TIM=== SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-
 
 	return True;
 }
@@ -242,17 +253,11 @@ simulated static function STraderItem BuildWeapon(string CI)
 
 	WeaponDef=class<KFWeaponDefinition>(DynamicLoadObject(CI,class'Class'));
 	if( WeaponDef == none )
-//		return CTI;
-		WeaponDef=Default.LemonWepDefClass;
+		return CTI;
 
 	WeaponClass=class<KFWeapon>(DynamicLoadObject(WeaponDef.Default.WeaponClassPath,class'Class'));
 	if( WeaponClass == none )
-	{
-//		return CTI;
-		WeaponDef=Default.LemonWepDefClass;
-		WeaponClass=Default.LemonWepClass;
-
-	}
+		return CTI;
 
 	CTI.WeaponDef=WeaponDef;
 	CTI.ClassName=WeaponClass.Name;
@@ -289,14 +294,27 @@ simulated static function STraderItem BuildWeapon(string CI)
 }
 
 
+
+function AddMutator(Mutator M)
+{
+	// The buck stops with us.
+	if( M != Self )
+	{
+		if( M.Class == Class )
+			M.Destroy();
+		else
+			Super.AddMutator( M);
+	}
+}
+
+
+
 defaultproperties
 {
 	Name="Default__TIMut"
 	ObjectArchetype=KFMutator'KFGame.Default__KFMutator'
 
 	OriginalInventorySize=-1
-	LemonWepClass=Class'TIM.KFWeap_NOT_Available'
-	LemonWepDefClass=Class'TIM.KFWeapDef_Unavailable'
 
 	bAlwaysRelevant=true
 	RemoteRole=ROLE_SimulatedProxy

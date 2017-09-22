@@ -17,6 +17,8 @@ var /*private*/ array<SItem> ClientItems;
 
 var private int CurrentIndex;
 var private int OriginalInventorySize;
+var private const class<KFWeapon> LemonWepClass;
+
 
 final function StartSyncItems()
 {
@@ -117,47 +119,71 @@ private reliable client final function bool AddWeapons()
 	if( OriginalInventorySize < 0 )
 		OriginalInventorySize=SaleItemsLength;
 
-//	for( i=0; i < ClientItems.Length; i++ )
 	for( i=SaleItemsLength-OriginalInventorySize; i < ClientItems.Length; i++ )
 	{
-		item=class'TIMut'.Static.BuildWeapon( ClientItems[i].DefPath);
+		`log("===TIM=== ClientItem["$i$"]:"@ClientItems[i].DefPath);
 
+		item=class'TIMut'.Static.BuildWeapon( ClientItems[i].DefPath);
+		item.ItemID=ClientItems[i].TraderId;
 
 		// item not on client?
-//		if( item.WeaponDef == None )
-//			item.ClassName=name(ClientItems[i].DefPath);
+		if( item.WeaponDef == None )
+		{
+			`log("===TIM=== dropping unknown ClientItem["$i$"]: ("$item.ItemID$") -"@ClientItems[i].DefPath);
 
-/*
-		// item already in trader inventory?
-		index=TI.SaleItems.Find('ClassName',item.ClassName);
+//			`log("===TIM=== ### CLIENT MISSING WEAPON! ###");
+//			ConsoleCommand( "Disconnect");
+
+			item=class'TIMut'.Static.BuildWeapon( "TIM.KFWeapDef_Unavailable");
+		}
+
+		// item ID already in trader inventory?
+		index=TI.SaleItems.Find('ItemID',item.ItemId);
 		if( index >= 0 )
 		{
-//			`log("===TIM=== duplicate ClientItem["$i$"]:"@item.ClassName);
-			`log("===TIM=== duplicate ClientItem["$i$"]:"@ClientItems[i].DefPath);
-			`log("===TIM=== original SaleItem["$index$"]:"@TI.SaleItems[index].ClassName);
-			if( index != ClientItems[i].TraderId )
-				`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC!");
+			`log("===TIM=== skipping present SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+
+			if( TI.SaleItems[index].ClassName != item.ClassName )
+			{
+				`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+				ConsoleCommand( "Disconnect");
+			}
 
 			continue;
 		}
-*/
 
-		// lemon? indicate clientside.
-		if( item.BlocksRequired == 99 )
-			item.BlocksRequired=0;
 
+		if( item.ClassName != Default.LemonWepClass.Name )
+		{
+			// item ClassName already in trader inventory? (really shouldn't happen)
+			index=TI.SaleItems.Find('ClassName',item.ClassName);
+			if( index >= 0 )
+			{
+				`log("===TIM=== skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+
+				if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
+				{
+					`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+					ConsoleCommand( "Disconnect");
+				}
+
+				continue;
+			}
+		}
+
+		`log("===TIM=== adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
 		TI.SaleItems.AddItem( item);
 		number++;
-
 	}
 
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-	foreach TI.SaleItems(item)
-		`log("===TIM=== SaleItem["$item.ItemID$"]:"@item.ClassName);
+	for( i=0; i < TI.SaleItems.Length; i++ )
+		`log("===TIM=== SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
+//	 BroadcastHandler.BroadcastText( None, ourPlayerController, "===TIM=== custom Weapons added:"@number, 'TIM' );
 
 
 	return True;
@@ -169,11 +195,12 @@ private reliable client final function bool AddWeapons()
 
 defaultproperties
 {
-    bAlwaysRelevant=false
-    bOnlyRelevantToOwner=true
+	bAlwaysRelevant=false
+	bOnlyRelevantToOwner=true
 
 	OriginalInventorySize=-1;
-   
-    Name="Default__TIMRepLink"
-    ObjectArchetype=ReplicationInfo'Engine.Default__ReplicationInfo'
+	LemonWepClass=Class'TIM.KFWeap_NOT_Available'
+
+	Name="Default__TIMRepLink"
+	ObjectArchetype=ReplicationInfo'Engine.Default__ReplicationInfo'
 }
