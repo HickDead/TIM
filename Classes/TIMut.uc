@@ -63,11 +63,10 @@ private static final function AddNewWeaponsToConfig()
 	switch( Default.iVersion )
 	{
 	case 2:
-// ...\Src\TIM\Classes\TIMut.uc(67) : Error, Type mismatch in 'add(...)'
-//		Default.CustomItems.Add("SawHammer.KFWeapDef_SawHammer")
+		Default.CustomItems.AddItem("SawHammer.KFWeapDef_SawHammer");
 	case 3:
-//		Default.CustomItems.Add("Hellfire.KFWeapDef_Hellfire")
-//		Default.CustomItems.Add("Hellfire.KFWeapDef_HellfireDual")
+		Default.CustomItems.AddItem("Hellfire.KFWeapDef_Hellfire");
+		Default.CustomItems.AddItem("Hellfire.KFWeapDef_HellfireDual");
 	case 4:
 		SaveSettings();
 	}
