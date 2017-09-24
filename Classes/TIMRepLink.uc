@@ -5,7 +5,10 @@
  *
  */
 
-class TIMRepLink extends ReplicationInfo;
+class TIMRepLink extends ReplicationInfo
+	config(TIM)
+;
+
 
 struct SItem
 {
@@ -18,7 +21,7 @@ var /*private*/ array<SItem> ClientItems;
 var private int CurrentIndex;
 var private int OriginalInventorySize;
 var private const class<KFWeapon> LemonWepClass;
-
+var config bool bDebugLog;
 
 final function StartSyncItems()
 {
@@ -121,7 +124,7 @@ private reliable client final function bool AddWeapons()
 
 	for( i=SaleItemsLength-OriginalInventorySize; i < ClientItems.Length; i++ )
 	{
-		`log("===TIM=== ClientItem["$i$"]:"@ClientItems[i].DefPath);
+		`Debug("ClientItem["$i$"]:"@ClientItems[i].DefPath);
 
 		item=class'TIMut'.Static.BuildWeapon( ClientItems[i].DefPath);
 		item.ItemID=ClientItems[i].TraderId;
@@ -129,9 +132,9 @@ private reliable client final function bool AddWeapons()
 		// item not on client?
 		if( item.WeaponDef == None )
 		{
-			`log("===TIM=== dropping unknown ClientItem["$i$"]: ("$item.ItemID$") -"@ClientItems[i].DefPath);
+			`Debug("dropping unknown ClientItem["$i$"]: ("$item.ItemID$") -"@ClientItems[i].DefPath);
 
-//			`log("===TIM=== ### CLIENT MISSING WEAPON! ###");
+//			`Debug("### CLIENT MISSING WEAPON! ###");
 //			ConsoleCommand( "Disconnect");
 
 			item=class'TIMut'.Static.BuildWeapon( "TIM.KFWeapDef_Unavailable");
@@ -141,11 +144,11 @@ private reliable client final function bool AddWeapons()
 		index=TI.SaleItems.Find('ItemID',item.ItemId);
 		if( index >= 0 )
 		{
-			`log("===TIM=== skipping present SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+			`Debug("skipping present SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
 
 			if( TI.SaleItems[index].ClassName != item.ClassName )
 			{
-				`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+				`Debug("### TRADER INVENTORY OUT OF SYNC! ###");
 				ConsoleCommand( "Disconnect");
 			}
 
@@ -159,11 +162,11 @@ private reliable client final function bool AddWeapons()
 			index=TI.SaleItems.Find('ClassName',item.ClassName);
 			if( index >= 0 )
 			{
-				`log("===TIM=== skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+				`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
 
 				if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
 				{
-					`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+					`Debug("### TRADER INVENTORY OUT OF SYNC! ###");
 					ConsoleCommand( "Disconnect");
 				}
 
@@ -171,7 +174,7 @@ private reliable client final function bool AddWeapons()
 			}
 		}
 
-		`log("===TIM=== adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
+		`Debug("adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
 		TI.SaleItems.AddItem( item);
 		number++;
 	}
@@ -180,10 +183,10 @@ private reliable client final function bool AddWeapons()
 		TI.SetItemsInfo( TI.SaleItems);
 
 	for( i=0; i < TI.SaleItems.Length; i++ )
-		`log("===TIM=== SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].ClassName);
+		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-//	 BroadcastHandler.BroadcastText( None, ourPlayerController, "===TIM=== custom Weapons added:"@number, 'TIM' );
+//	 BroadcastHandler.BroadcastText( None, ourPlayerController, "custom Weapons added:"@number, 'TIM' );
 
 
 	return True;
