@@ -1,6 +1,6 @@
 // TIM - Globals.uci
 
 // increment this after the mod gets uploaded to the workshop.
-`define VERSION 2
+`define VERSION 1
 
 `define Debug(Text) if( bDebugLog ) LogInternal("===TIM===" @ `{Text})

@@ -95,19 +95,18 @@ simulated function addWeaponsTimer()
 
 private reliable client final function bool AddWeapons()
 {
-	local WorldInfo WI;
 	local KFGameReplicationInfo KFGRI;
 	local KFGFxObject_TraderItems TI;
 	local STraderItem item;
 	local int i, index, number, SaleItemsLength;
 //	local SItem RepItem;
+//	local KFPlayerController KFPC;
 
 
-	WI=class'WorldInfo'.Static.GetWorldInfo();
-	if( WI == none )
+	if( WorldInfo == none )
 		return False;
 
-	KFGRI=KFGameReplicationInfo( WI.GRI);
+	KFGRI = KFGameReplicationInfo(WorldInfo.GRI);
 	if( KFGRI == none )
 		return False;
 
@@ -115,12 +114,15 @@ private reliable client final function bool AddWeapons()
 	if( TI == none )
 		return False;
 
+//	KFPC=KFPlayerController(class'Engine'.Static.GetEngine().GamePlayers[0].Actor);
+
 	SaleItemsLength=TI.SaleItems.Length;
 	if( SaleItemsLength < 1 )
 		return False;
 
 	if( OriginalInventorySize < 0 )
 		OriginalInventorySize=SaleItemsLength;
+
 
 	for( i=SaleItemsLength-OriginalInventorySize; i < ClientItems.Length; i++ )
 	{
@@ -134,7 +136,7 @@ private reliable client final function bool AddWeapons()
 		{
 			`Debug("dropping unknown ClientItem["$i$"]: ("$item.ItemID$") -"@ClientItems[i].DefPath);
 
-//			`Debug("### CLIENT MISSING WEAPON! ###");
+//			`log("===TIM=== ### CLIENT MISSING WEAPON! ###");
 //			ConsoleCommand( "Disconnect");
 
 			item=class'TIMut'.Static.BuildWeapon( "TIM.KFWeapDef_Unavailable");
@@ -148,7 +150,7 @@ private reliable client final function bool AddWeapons()
 
 			if( TI.SaleItems[index].ClassName != item.ClassName )
 			{
-				`Debug("### TRADER INVENTORY OUT OF SYNC! ###");
+				`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
 				ConsoleCommand( "Disconnect");
 			}
 
@@ -166,7 +168,7 @@ private reliable client final function bool AddWeapons()
 
 				if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
 				{
-					`Debug("### TRADER INVENTORY OUT OF SYNC! ###");
+					`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
 					ConsoleCommand( "Disconnect");
 				}
 
@@ -186,7 +188,7 @@ private reliable client final function bool AddWeapons()
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-//	 BroadcastHandler.BroadcastText( None, ourPlayerController, "custom Weapons added:"@number, 'TIM' );
+//	 BroadcastHandler.BroadcastText( None, KFPC, "custom Weapons added:"@number, 'TIM' );
 
 
 	return True;
