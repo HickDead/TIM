@@ -23,6 +23,14 @@ var private int OriginalInventorySize;
 var private const class<KFWeapon> LemonWepClass;
 var config bool bDebugLog;
 
+
+static final function SaveSettings()
+{
+	Default.bDebugLog=True;
+	StaticSaveConfig();
+}
+
+
 final function StartSyncItems()
 {
     SetTimer(0.05f, true, nameof(SyncItems));
@@ -136,8 +144,9 @@ private reliable client final function bool AddWeapons()
 		{
 			`Debug("dropping unknown ClientItem["$i$"]: ("$item.ItemID$") -"@ClientItems[i].DefPath);
 
-//			`log("===TIM=== ### CLIENT MISSING WEAPON! ###");
-//			ConsoleCommand( "Disconnect");
+			`log("===TIM=== ### CLIENT MISSING WEAPON! ###");
+			class'TIMut'.Static.LogToConsole( "===TIM=== ### CLIENT MISSING WEAPON! ### Disconnecting! -"@ClientItems[i].DefPath);
+			ConsoleCommand( "Disconnect");
 
 			item=class'TIMut'.Static.BuildWeapon( "TIM.KFWeapDef_Unavailable");
 		}
@@ -151,6 +160,7 @@ private reliable client final function bool AddWeapons()
 			if( TI.SaleItems[index].ClassName != item.ClassName )
 			{
 				`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+				class'TIMut'.Static.LogToConsole( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ### Disconnecting! - Please restart your client!");
 				ConsoleCommand( "Disconnect");
 			}
 
@@ -168,7 +178,8 @@ private reliable client final function bool AddWeapons()
 
 				if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
 				{
-					`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+					`log( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+					class'TIMut'.Static.LogToConsole( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ### Disconnecting! - Please restart your client!");
 					ConsoleCommand( "Disconnect");
 				}
 
@@ -189,6 +200,7 @@ private reliable client final function bool AddWeapons()
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
 //	 BroadcastHandler.BroadcastText( None, KFPC, "custom Weapons added:"@number, 'TIM' );
+	class'TIMut'.Static.LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
 
 
 	return True;

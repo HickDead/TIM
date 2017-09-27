@@ -32,62 +32,99 @@ var config bool bAddNewWeaponsToConfig;
 
 
 
-static final function LoadSettings(out array<string> CurrentItems)
+static final function LogToConsole(string Text)
 {
-	if( Default.iVersion > 0 )
+    local KFGameEngine KFGE;
+    local KFGameViewportClient KFGVC;
+    local Console TheConsole;
+    
+    KFGE = KFGameEngine(class'Engine'.Static.GetEngine());
+    
+    if (KFGE != none)
+    {
+        KFGVC = KFGameViewportClient(KFGE.GameViewport);
+        
+        if (KFGVC != none)
+        {
+            TheConsole = KFGVC.ViewportConsole;
+            
+            if (TheConsole != none)
+                TheConsole.OutputText(Text);
+        }
+    }
+}
+
+
+private final function LoadSettings()
+{
+	if( iVersion > 0 )
 		InitSettings();
 	else
 		ResetSettings();
-
-	CurrentItems=Default.CustomItems;
 }
 
-private static final function InitSettings()
+private final function InitSettings()
 {
 
-	if( Default.CustomItems.Length < 1 )
+	if( CustomItems.Length < 1 )
 	{
-		Default.CustomItems=Default.DefaultItems;
+		CustomItems=DefaultItems;
 		SaveSettings();
 	}
-	else if( Default.bAddNewWeaponsToConfig && Default.iVersion < `VERSION )
+	else if( bAddNewWeaponsToConfig && iVersion < `VERSION )
 	{
 		AddNewWeaponsToConfig();
 	}
 
 }
 
-private static final function AddNewWeaponsToConfig()
+private final function AddNewWeaponsToConfig()
 {
 
-	switch( Default.iVersion )
+	switch( iVersion )
 	{
 	case 2:
-		Default.CustomItems.AddItem("SawHammer.KFWeapDef_SawHammer");
+		CustomItems.AddItem("SawHammer.KFWeapDef_SawHammer");
+		SaveSettings();
+		break;
 	case 3:
-		Default.CustomItems.AddItem("Hellfire.KFWeapDef_Hellfire");
-		Default.CustomItems.AddItem("Hellfire.KFWeapDef_HellfireDual");
+		CustomItems.AddItem("Hellfire.KFWeapDef_Hellfire");
+		CustomItems.AddItem("Hellfire.KFWeapDef_HellfireDual");
 	case 4:
 		SaveSettings();
 	}
 
 }
 
-private static final function ResetSettings()
+/*
+private final function AddWeaponsToConfig()
+{
+    local string DefName;
+    
+    foreach DefaultItems(DefName)
+    {
+        if (CustomItems.Find(DefName) < 0)
+            CustomItems.AddItem(DefName);
+    }
+}
+*/
+
+private final function ResetSettings()
 {
 
-	Default.bAddNewWeaponsToConfig=True;
-	Default.bDebugLog=True;
-	Default.CustomItems=Default.DefaultItems;
+	bAddNewWeaponsToConfig=True;
+	bDebugLog=True;
+	CustomItems=DefaultItems;
 	SaveSettings();
 
 }
 
-private static final function SaveSettings()
+private final function SaveSettings()
 {
-    Default.iVersion=`VERSION;
+	Default.iVersion=`VERSION;
     
-    StaticSaveConfig();
+	SaveConfig();
+	class'TIMRepLink'.Static.SaveSettings();
 }
 
 
@@ -197,7 +234,7 @@ event PostBeginPlay()
 //	CustomItems.addItem( "Schneidzekk.KFWeapDef_Schneidzekk");
 //	SaveConfig();
 
-	LoadSettings( CustomItems);
+	LoadSettings();
 
 	SetTimer( 1.0f, true, nameof(addWeaponsTimer));
 
@@ -302,6 +339,8 @@ final function bool AddWeapons()
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
 //	BroadcastHandler.BroadcastText( none, KFPC, "custom Weapons added:"@number, 'TIM' );
 //	Broadcast( none, "custom Weapons added:"@number, 'TIM');
+	WorldInfo.Game.Broadcast( none, "===TIM=== Weapons added:"@number);
+	LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
 
 	return True;
 }
