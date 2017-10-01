@@ -200,7 +200,8 @@ private reliable client final function bool AddWeapons()
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
 //	 BroadcastHandler.BroadcastText( None, KFPC, "custom Weapons added:"@number, 'TIM' );
-	class'TIMut'.Static.LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
+	if( number > 0 )
+		class'TIMut'.Static.LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
 
 
 	return True;

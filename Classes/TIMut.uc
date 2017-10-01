@@ -83,14 +83,12 @@ private final function AddNewWeaponsToConfig()
 
 	switch( iVersion )
 	{
+	case 1:
+		CustomItems.AddItem("WeaponPack.KFWeapDef_AUG9mm");
+		CustomItems.AddItem("WeaponPack.KFWeapDef_M60MG");
+		CustomItems.AddItem("WeaponPack.KFWeapDef_Spas12");
 	case 2:
-		CustomItems.AddItem("SawHammer.KFWeapDef_SawHammer");
-		SaveSettings();
-		break;
 	case 3:
-		CustomItems.AddItem("Hellfire.KFWeapDef_Hellfire");
-		CustomItems.AddItem("Hellfire.KFWeapDef_HellfireDual");
-	case 4:
 		SaveSettings();
 	}
 
@@ -121,7 +119,7 @@ private final function ResetSettings()
 
 private final function SaveSettings()
 {
-	Default.iVersion=`VERSION;
+	iVersion=`VERSION;
     
 	SaveConfig();
 	class'TIMRepLink'.Static.SaveSettings();
@@ -261,7 +259,7 @@ final function bool AddWeapons()
 	local STraderItem item;
 	local int i, index, number, saleItemsLength, freeID;
 	local SItem RepItem;
-	local class<GameInfo> GI;
+//	local class<GameInfo> GI;
 
 
 	if( WorldInfo == none )
@@ -340,7 +338,8 @@ final function bool AddWeapons()
 //	BroadcastHandler.BroadcastText( none, KFPC, "custom Weapons added:"@number, 'TIM' );
 //	Broadcast( none, "custom Weapons added:"@number, 'TIM');
 	WorldInfo.Game.Broadcast( none, "===TIM=== Weapons added:"@number);
-	LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
+	if( number > 0 )
+		LogToConsole( "===TIM=== (v"$iVersion$") custom Weapons added to trader inventory:"@number);
 
 	return True;
 }
@@ -618,6 +617,12 @@ defaultproperties
 
 	// == M99 Sniper rifle -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137411101
 	DefaultItems.Add("M99.KFWeapDef_M99")
+
+	// == Weapon Pack -- http://steamcommunity.com/sharedfiles/filedetails/?id=1147408497
+	DefaultItems.Add("WeaponPack.KFWeapDef_AUG9mm")
+	DefaultItems.Add("WeaponPack.KFWeapDef_M60MG")
+	DefaultItems.Add("WeaponPack.KFWeapDef_Spas12")
+	//DefaultItems.Add("WeaponPack.KFWeapDef_SVD")
 
 /*
 	// == BassCannon -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137726392
