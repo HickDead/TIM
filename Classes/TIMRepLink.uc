@@ -79,7 +79,7 @@ private reliable client final function ClientSyncItem(string DefPath, int Trader
 private reliable client final function ClientSyncFinished()
 {
 
-	`log("===TIM=== ClientSyncFinished()");
+	`log("===TIM=== ClientSyncFinished():"@ClientItems.Length@"items");
 
 	if( ! AddWeapons() )
 		SetTimer( 0.1f, true, nameof(addWeaponsTimer));
@@ -107,8 +107,6 @@ private reliable client final function bool AddWeapons()
 	local KFGFxObject_TraderItems TI;
 	local STraderItem item;
 	local int i, index, number, SaleItemsLength;
-//	local SItem RepItem;
-//	local KFPlayerController KFPC;
 
 
 	if( WorldInfo == none )
@@ -121,8 +119,6 @@ private reliable client final function bool AddWeapons()
 	TI=KFGRI.TraderItems;
 	if( TI == none )
 		return False;
-
-//	KFPC=KFPlayerController(class'Engine'.Static.GetEngine().GamePlayers[0].Actor);
 
 	SaleItemsLength=TI.SaleItems.Length;
 	if( SaleItemsLength < 1 )
@@ -199,7 +195,6 @@ private reliable client final function bool AddWeapons()
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-//	 BroadcastHandler.BroadcastText( None, KFPC, "custom Weapons added:"@number, 'TIM' );
 	if( number > 0 )
 		class'TIMut'.Static.LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
 

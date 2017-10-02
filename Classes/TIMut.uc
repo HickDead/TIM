@@ -88,24 +88,12 @@ private final function AddNewWeaponsToConfig()
 		CustomItems.AddItem("WeaponPack.KFWeapDef_M60MG");
 		CustomItems.AddItem("WeaponPack.KFWeapDef_Spas12");
 	case 2:
+		CustomItems.AddItem("M16M203MDC.KFWeapDef_M16M203MDC");
 	case 3:
 		SaveSettings();
 	}
 
 }
-
-/*
-private final function AddWeaponsToConfig()
-{
-    local string DefName;
-    
-    foreach DefaultItems(DefName)
-    {
-        if (CustomItems.Find(DefName) < 0)
-            CustomItems.AddItem(DefName);
-    }
-}
-*/
 
 private final function ResetSettings()
 {
@@ -229,9 +217,6 @@ event PostBeginPlay()
 	else
 		WorldInfo.Game.BaseMutator.AddMutator( Self);
 
-//	CustomItems.addItem( "Schneidzekk.KFWeapDef_Schneidzekk");
-//	SaveConfig();
-
 	LoadSettings();
 
 	SetTimer( 1.0f, true, nameof(addWeaponsTimer));
@@ -259,7 +244,6 @@ final function bool AddWeapons()
 	local STraderItem item;
 	local int i, index, number, saleItemsLength, freeID;
 	local SItem RepItem;
-//	local class<GameInfo> GI;
 
 
 	if( WorldInfo == none )
@@ -302,7 +286,7 @@ final function bool AddWeapons()
 			continue;
 		}
 
-		// item ID already in trader inventory?
+		// item ID already in trader inventory?  no workie due to freeID
 		index=TI.SaleItems.Find('ItemID',item.ItemId);
 		if( index >= 0 )
 		{
@@ -315,6 +299,14 @@ final function bool AddWeapons()
 		if( index >= 0 )
 		{
 			`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+
+			if( ServerItems.Find('TraderId',TI.SaleItems[index].ItemID) < 0 )
+			{
+				RepItem.DefPath=CustomItems[i];
+				RepItem.TraderId=TI.SaleItems[index].ItemID;
+				ServerItems.AddItem( RepItem);
+			}
+
 			continue;
 		}
 
@@ -335,9 +327,7 @@ final function bool AddWeapons()
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-//	BroadcastHandler.BroadcastText( none, KFPC, "custom Weapons added:"@number, 'TIM' );
-//	Broadcast( none, "custom Weapons added:"@number, 'TIM');
-	WorldInfo.Game.Broadcast( none, "===TIM=== Weapons added:"@number);
+//	WorldInfo.Game.Broadcast( none, "===TIM=== (v"$iVersion$") Weapons added:"@number);
 	if( number > 0 )
 		LogToConsole( "===TIM=== (v"$iVersion$") custom Weapons added to trader inventory:"@number);
 
@@ -392,6 +382,14 @@ simulated static function STraderItem BuildWeapon(string CI)
 
 	CTI.TraderFilter=WeaponClass.Static.GetTraderFilter();
 	CTI.AltTraderFilter=WeaponClass.Static.GetAltTraderFilter();
+
+/**/
+	if( WeaponClass.Default.SecondaryAmmoTexture != None )
+		CTI.SecondaryAmmoImagePath="img://"$PathName(WeaponClass.Default.SecondaryAmmoTexture);
+	CTI.InventoryGroup=WeaponClass.Default.InventoryGroup;
+	CTI.GroupPriority=WeaponClass.Default.GroupPriority;
+	WeaponClass.Static.SetTraderWeaponStats( CTI.WeaponStats);
+/**/
 
 
 	return CTI;
@@ -623,6 +621,9 @@ defaultproperties
 	DefaultItems.Add("WeaponPack.KFWeapDef_M60MG")
 	DefaultItems.Add("WeaponPack.KFWeapDef_Spas12")
 	//DefaultItems.Add("WeaponPack.KFWeapDef_SVD")
+
+	// == M16M203MDC -- http://steamcommunity.com/sharedfiles/filedetails/?id=1150733214
+	DefaultItems.Add("M16M203MDC.KFWeapDef_M16M203MDC")
 
 /*
 	// == BassCannon -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137726392
