@@ -274,7 +274,6 @@ final function bool AddWeapons()
 	number=0;
 	for( i=saleItemsLength-OriginalInventorySize; i < CustomItems.Length; i++ )
 	{
-
 		`Debug("CustomItem["$i$"]:"@CustomItems[i]);
 		item=BuildWeapon( CustomItems[i]);
 		item.ItemID=freeID+number;
@@ -286,17 +285,19 @@ final function bool AddWeapons()
 			continue;
 		}
 
-		// item ID already in trader inventory?  no workie due to freeID
-		index=TI.SaleItems.Find('ItemID',item.ItemId);
-		if( index >= 0 )
-		{
-			`Debug("skipping present SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
-			continue;
-		}
-
 		// item ClassName already in trader inventory?
 		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
-		if( index >= 0 )
+		if( index < 0 )
+		{
+			`Debug("adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
+			TI.SaleItems.AddItem( item);
+			number++;
+
+			RepItem.DefPath=CustomItems[i];
+			RepItem.TraderId=item.ItemID;
+			ServerItems.AddItem( RepItem);
+		}
+		else
 		{
 			`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
 
@@ -306,17 +307,7 @@ final function bool AddWeapons()
 				RepItem.TraderId=TI.SaleItems[index].ItemID;
 				ServerItems.AddItem( RepItem);
 			}
-
-			continue;
 		}
-
-		RepItem.DefPath=CustomItems[i];
-		RepItem.TraderId=item.ItemID;
-		ServerItems.AddItem( RepItem);
-
-		`Debug("adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
-		TI.SaleItems.AddItem( item);
-		number++;
 	}
 
 
@@ -326,8 +317,8 @@ final function bool AddWeapons()
 	for( i=0; i < TI.SaleItems.Length; i++ )
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
 
-	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-//	WorldInfo.Game.Broadcast( none, "===TIM=== (v"$iVersion$") Weapons added:"@number);
+	`log("===TIM=== custom Weapons added to trader inventory:"@ServerItems.Length);
+//	WorldInfo.Game.Broadcast( none, "===TIM=== (v"$iVersion$") Weapons added:"@ServerItems.Length);
 	if( number > 0 )
 		LogToConsole( "===TIM=== (v"$iVersion$") custom Weapons added to trader inventory:"@number);
 
