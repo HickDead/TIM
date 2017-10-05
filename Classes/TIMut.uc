@@ -374,13 +374,11 @@ simulated static function STraderItem BuildWeapon(string CI)
 	CTI.TraderFilter=WeaponClass.Static.GetTraderFilter();
 	CTI.AltTraderFilter=WeaponClass.Static.GetAltTraderFilter();
 
-/**/
 	if( WeaponClass.Default.SecondaryAmmoTexture != None )
 		CTI.SecondaryAmmoImagePath="img://"$PathName(WeaponClass.Default.SecondaryAmmoTexture);
 	CTI.InventoryGroup=WeaponClass.Default.InventoryGroup;
 	CTI.GroupPriority=WeaponClass.Default.GroupPriority;
 	WeaponClass.Static.SetTraderWeaponStats( CTI.WeaponStats);
-/**/
 
 
 	return CTI;
@@ -594,6 +592,17 @@ defaultproperties
 	// == Custom M14EBRs -- http://steamcommunity.com/sharedfiles/filedetails/?id=959410214 **
 //	DefaultItems.Add("CustomM14s.KFWeapDef_CustomM14EBR")
 	DefaultItems.Add("CustomM14s.KFWeapDef_IronSightM14EBR")
+
+	// == YeeHaw: Horzine Scientist -- http://steamcommunity.com/sharedfiles/filedetails/?id=1095651180
+//	DefaultItems.Add("YeeHaw.YHWeapDef_Grenade_BloatMine")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_Grenade_Scientist")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_Healer")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_MedicPistol")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_MedicRifle")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_MedicSMG")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_MedicShotgun")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_MicrowaveGun")
+//	DefaultItems.Add("YeeHaw.YHWeapDef_RailGun")
 
 	// == Schneidzekk -- http://steamcommunity.com/sharedfiles/filedetails/?id=1117901956
 	DefaultItems.Add("Schneidzekk.KFWeapDef_Schneidzekk")
