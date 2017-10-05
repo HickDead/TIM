@@ -20,7 +20,6 @@ var /*private*/ array<SItem> ClientItems;
 
 var private int CurrentIndex;
 var private int OriginalInventorySize;
-//var private const class<KFWeapon> LemonWepClass;
 var config bool bDebugLog;
 
 
@@ -164,32 +163,29 @@ private reliable client final function bool AddWeapons()
 		}
 
 
-//		if( item.ClassName != Default.LemonWepClass.Name )
-//		{
-			// item ClassName already in trader inventory? (really shouldn't happen)
-			index=TI.SaleItems.Find('ClassName',item.ClassName);
-			if( index >= 0 )
+		// item ClassName already in trader inventory? (really shouldn't happen)
+		index=TI.SaleItems.Find('ClassName',item.ClassName);
+		if( index >= 0 )
+		{
+			`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+
+			if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
 			{
-				`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
-
-				if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
-				{
-					`log( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
-					class'TIMut'.Static.LogToConsole( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ### Disconnecting! - Please restart your client!");
-					ConsoleCommand( "Disconnect");
-				}
-
-				continue;
+				`log( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
+				class'TIMut'.Static.LogToConsole( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ### Disconnecting! - Please restart your client!");
+				ConsoleCommand( "Disconnect");
 			}
-//		}
+
+			continue;
+		}
 
 		`Debug("adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
 		TI.SaleItems.AddItem( item);
 		number++;
 	}
 
-	if( number > 0 )
-		TI.SetItemsInfo( TI.SaleItems);
+//	if( number > 0 )
+//		TI.SetItemsInfo( TI.SaleItems);
 
 	for( i=0; i < TI.SaleItems.Length; i++ )
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
@@ -212,7 +208,6 @@ defaultproperties
 	bOnlyRelevantToOwner=true
 
 	OriginalInventorySize=-1;
-//	LemonWepClass=Class'TIM.KFWeap_NOT_Available'
 
 	Name="Default__TIMRepLink"
 	ObjectArchetype=ReplicationInfo'Engine.Default__ReplicationInfo'

@@ -311,8 +311,8 @@ final function bool AddWeapons()
 	}
 
 
-	if( number > 0 )
-		TI.SetItemsInfo( TI.SaleItems);
+//	if( number > 0 )
+//		TI.SetItemsInfo( TI.SaleItems);
 
 	for( i=0; i < TI.SaleItems.Length; i++ )
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
