@@ -192,8 +192,7 @@ private reliable client final function bool AddWeapons()
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@number);
 	if( number > 0 )
-		class'TIMut'.Static.LogToConsole( "===TIM=== custom Weapons added to trader inventory:"@number);
-
+		class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory:"@number);
 
 	return True;
 

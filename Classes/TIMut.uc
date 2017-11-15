@@ -90,6 +90,10 @@ private final function AddNewWeaponsToConfig()
 	case 2:
 		CustomItems.AddItem("M16M203MDC.KFWeapDef_M16M203MDC");
 	case 3:
+		CustomItems.AddItem("CDWM.KFWeapDef_AK47");
+		CustomItems.AddItem("CDWM.KFWeapDef_M4_2");
+		CustomItems.AddItem("CDWM.KFWeapDef_ZedTimeTBall2");
+	case 4:
 		SaveSettings();
 	}
 
@@ -311,16 +315,16 @@ final function bool AddWeapons()
 	}
 
 
-//	if( number > 0 )
-//		TI.SetItemsInfo( TI.SaleItems);
+	if( number > 0 )
+		TI.SetItemsInfo( TI.SaleItems);
 
 	for( i=0; i < TI.SaleItems.Length; i++ )
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
 
 	`log("===TIM=== custom Weapons added to trader inventory:"@ServerItems.Length);
-//	WorldInfo.Game.Broadcast( none, "===TIM=== (v"$iVersion$") Weapons added:"@ServerItems.Length);
+//	WorldInfo.Game.Broadcast( none, "===TIM=== (v"$`VERSION$") Weapons added:"@ServerItems.Length);
 	if( number > 0 )
-		LogToConsole( "===TIM=== (v"$iVersion$") custom Weapons added to trader inventory:"@number);
+		LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory:"@number);
 
 	return True;
 }
@@ -347,6 +351,9 @@ simulated static function STraderItem BuildWeapon(string CI)
 	CTI.WeaponDef=WeaponDef;
 	CTI.ClassName=WeaponClass.Name;
 
+	return CTI; // call native instead of below
+
+
 	if( class<KFWeap_DualBase>(WeaponClass) != none && class<KFWeap_DualBase>(WeaponClass).Default.SingleClass != none )
 		CTI.SingleClassName=class<KFWeap_DualBase>(WeaponClass).Default.SingleClass.Name;
 	else
@@ -366,7 +373,7 @@ simulated static function STraderItem BuildWeapon(string CI)
 	CTI.MaxSecondaryAmmo=WeaponClass.Default.SpareAmmoCapacity[1];
 
 	CTI.BlocksRequired=WeaponClass.Default.InventorySize;
-	WeaponClass.Static.SetTraderWeaponStats(CTI.WeaponStats);
+//	WeaponClass.Static.SetTraderWeaponStats(CTI.WeaponStats);
 
 	CTI.InventoryGroup=WeaponClass.Default.InventoryGroup;
 	CTI.GroupPriority=WeaponClass.Default.GroupPriority;
@@ -442,7 +449,7 @@ defaultproperties
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Sharpshooter")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Support")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_SWAT")
-//	DefaultItems.Add("KFGame.KFWeapDef_Healer")
+////	DefaultItems.Add("KFGame.KFWeapDef_Healer")
 //	DefaultItems.Add("KFGame.KFWeapDef_HX25")
 //	DefaultItems.Add("KFGame.KFWeapDef_HZ12")
 //	DefaultItems.Add("KFGame.KFWeapDef_Katana")
@@ -472,7 +479,7 @@ defaultproperties
 //	DefaultItems.Add("KFGame.KFWeapDef_P90")
 //	DefaultItems.Add("KFGame.KFWeapDef_Pulverizer")
 //	DefaultItems.Add("KFGame.KFWeapDef_RailGun")
-//	DefaultItems.Add("KFGame.KFWeapDef_Random")
+////	DefaultItems.Add("KFGame.KFWeapDef_Random")
 //	DefaultItems.Add("KFGame.KFWeapDef_Remington1858")
 //	DefaultItems.Add("KFGame.KFWeapDef_Remington1858Dual")
 //	DefaultItems.Add("KFGame.KFWeapDef_RPG7")
@@ -480,7 +487,7 @@ defaultproperties
 //	DefaultItems.Add("KFGame.KFWeapDef_Stoner63A")
 //	DefaultItems.Add("KFGame.KFWeapDef_SW500")
 //	DefaultItems.Add("KFGame.KFWeapDef_SW500Dual")
-//	DefaultItems.Add("KFGame.KFWeapDef_Welder")
+////	DefaultItems.Add("KFGame.KFWeapDef_Welder")
 //	DefaultItems.Add("KFGame.KFWeapDef_Winchester1894")
 //	DefaultItems.Add("KFGame.KFWeapDef_Zweihander")
 
@@ -593,6 +600,24 @@ defaultproperties
 //	DefaultItems.Add("CustomM14s.KFWeapDef_CustomM14EBR")
 	DefaultItems.Add("CustomM14s.KFWeapDef_IronSightM14EBR")
 
+	// == CD Weapons Mod -- http://steamcommunity.com/sharedfiles/filedetails/?id=969556681
+//	DefaultItems.Add("CDWM.KFWeapDef_AA12Dragon")
+	DefaultItems.Add("CDWM.KFWeapDef_AK47")
+//	DefaultItems.Add("CDWM.KFWeapDef_AmmoBox")
+//	DefaultItems.Add("CDWM.KFWeapDef_BileThrower")
+//	DefaultItems.Add("CDWM.KFWeapDef_DualMauser")
+//	DefaultItems.Add("CDWM.KFWeapDef_FNC")
+//	DefaultItems.Add("CDWM.KFWeapDef_HK416")
+	DefaultItems.Add("CDWM.KFWeapDef_M4_2")
+//	DefaultItems.Add("CDWM.KFWeapDef_M60")
+//	DefaultItems.Add("CDWM.KFWeapDef_MK")
+//	DefaultItems.Add("CDWM.KFWeapDef_Mauser")
+//	DefaultItems.Add("CDWM.KFWeapDef_NUKEAT")
+//	DefaultItems.Add("CDWM.KFWeapDef_RailGunZR2")
+//	DefaultItems.Add("CDWM.KFWeapDef_Rifle_Barret50")
+//	DefaultItems.Add("CDWM.KFWeapDef_SVD")
+	DefaultItems.Add("CDWM.KFWeapDef_ZedTimeTBall2")
+
 	// == YeeHaw: Horzine Scientist -- http://steamcommunity.com/sharedfiles/filedetails/?id=1095651180
 //	DefaultItems.Add("YeeHaw.YHWeapDef_Grenade_BloatMine")
 //	DefaultItems.Add("YeeHaw.YHWeapDef_Grenade_Scientist")
@@ -620,7 +645,7 @@ defaultproperties
 	DefaultItems.Add("WeaponPack.KFWeapDef_AUG9mm")
 	DefaultItems.Add("WeaponPack.KFWeapDef_M60MG")
 	DefaultItems.Add("WeaponPack.KFWeapDef_Spas12")
-	//DefaultItems.Add("WeaponPack.KFWeapDef_SVD")
+//	DefaultItems.Add("WeaponPack.KFWeapDef_SVD")
 
 	// == M16M203MDC -- http://steamcommunity.com/sharedfiles/filedetails/?id=1150733214
 	DefaultItems.Add("M16M203MDC.KFWeapDef_M16M203MDC")
