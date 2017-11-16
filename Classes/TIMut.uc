@@ -333,7 +333,7 @@ final function bool AddWeapons()
 
 	if( WorldInfo == none )
 	{
-		`log( "===TIM=== no WI");
+		`Debug( "===TIM=== no WI");
 		return False;
 	}
 
@@ -350,7 +350,7 @@ final function bool AddWeapons()
 	number=0;
 	foreach CustomItems( CustomItem, i)
 	{
-		item=BuildWeapon( CustomItem);
+		item=LoadWeapon( CustomItem);
 
 		if( item.WeaponDef == none )
 		{
@@ -370,7 +370,6 @@ final function bool AddWeapons()
 		ServerItems.AddItem( RepItem);
 
 		`Debug( "adding CustomItem["$i$"]:"@CustomItem);
-//		`Debug( "adding SaleItem["$TI.SaleItems.Length$"]: ("$number$") - "$CustomItem$);
 		item.ItemID=RepItem.TraderId;
 		TI.SaleItems.AddItem( item);
 
@@ -388,96 +387,7 @@ final function bool AddWeapons()
 }
 
 
-final function bool AddWeapons2()
-{
-	local KFGameReplicationInfo KFGRI;
-	local KFGFxObject_TraderItems TI;
-	local STraderItem item;
-	local int i, index, number, saleItemsLength, freeID;
-	local SItem RepItem;
-
-
-	if( WorldInfo == none )
-		return False;
-
-	KFGRI = KFGameReplicationInfo( WorldInfo.GRI);
-	if( KFGRI == none )
-		return False;
-
-	TI=KFGRI.TraderItems;
-	if( TI == none )
-		return False;
-    
-	saleItemsLength=TI.SaleItems.Length;
-	if( saleItemsLength < 1 )
-		return False;
-
-	if( OriginalInventorySize < 0 )
-		OriginalInventorySize=saleItemsLength;
-
-	// find highest ItemID in use
-	freeID=-1;
-	foreach TI.SaleItems(item)
-		if( item.ItemID > freeID )
-			freeID=item.ItemID;
-	freeID++;
-
-	number=0;
-	for( i=saleItemsLength-OriginalInventorySize; i < CustomItems.Length; i++ )
-	{
-		`Debug("CustomItem["$i$"]:"@CustomItems[i]);
-		item=BuildWeapon( CustomItems[i]);
-		item.ItemID=freeID+number;
-
-		// item not on server?
-		if( item.WeaponDef == none )
-		{
-			`Debug("dropping unknown CustomItem["$i$"]:"@CustomItems[i]);
-			continue;
-		}
-
-		// item ClassName already in trader inventory?
-		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
-		if( index < 0 )
-		{
-			`Debug("adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
-			TI.SaleItems.AddItem( item);
-			number++;
-
-			RepItem.DefPath=CustomItems[i];
-			RepItem.TraderId=item.ItemID;
-			ServerItems.AddItem( RepItem);
-		}
-		else
-		{
-			`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
-
-			if( ServerItems.Find('TraderId',TI.SaleItems[index].ItemID) < 0 )
-			{
-				RepItem.DefPath=CustomItems[i];
-				RepItem.TraderId=TI.SaleItems[index].ItemID;
-				ServerItems.AddItem( RepItem);
-			}
-		}
-	}
-
-
-	if( number > 0 )
-		TI.SetItemsInfo( TI.SaleItems);
-
-	for( i=0; i < TI.SaleItems.Length; i++ )
-		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
-
-	`log("===TIM=== custom Weapons added to trader inventory:"@ServerItems.Length);
-//	WorldInfo.Game.Broadcast( none, "===TIM=== (v"$`VERSION$") Weapons added:"@ServerItems.Length);
-	if( number > 0 )
-		LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory:"@number);
-
-	return True;
-}
-
-
-simulated static function STraderItem BuildWeapon(string CI)
+simulated static function STraderItem LoadWeapon(string CI)
 {
 	local STraderItem CTI;
 	local class<KFWeaponDefinition> WeaponDef;
@@ -497,42 +407,6 @@ simulated static function STraderItem BuildWeapon(string CI)
 
 	CTI.WeaponDef=WeaponDef;
 	CTI.ClassName=WeaponClass.Name;
-
-	return CTI; // call native instead of below
-
-
-	if( class<KFWeap_DualBase>(WeaponClass) != none && class<KFWeap_DualBase>(WeaponClass).Default.SingleClass != none )
-		CTI.SingleClassName=class<KFWeap_DualBase>(WeaponClass).Default.SingleClass.Name;
-	else
-		CTI.SingleClassName='';
-
-	if( WeaponClass.Default.DualClass != none )
-		CTI.DualClassName=WeaponClass.Default.DualClass.Name;
-	else
-		CTI.DualClassName='';
-
-	CTI.AssociatedPerkClasses=WeaponClass.Static.GetAssociatedPerkClasses();
-
-	CTI.MagazineCapacity=WeaponClass.Default.MagazineCapacity[0];
-	CTI.InitialSpareMags=WeaponClass.Default.InitialSpareMags[0];
-	CTI.MaxSpareAmmo=WeaponClass.Default.SpareAmmoCapacity[0];
-	CTI.InitialSecondaryAmmo=WeaponClass.Default.InitialSpareMags[1]*WeaponClass.Default.MagazineCapacity[1];
-	CTI.MaxSecondaryAmmo=WeaponClass.Default.SpareAmmoCapacity[1];
-
-	CTI.BlocksRequired=WeaponClass.Default.InventorySize;
-//	WeaponClass.Static.SetTraderWeaponStats(CTI.WeaponStats);
-
-	CTI.InventoryGroup=WeaponClass.Default.InventoryGroup;
-	CTI.GroupPriority=WeaponClass.Default.GroupPriority;
-
-	CTI.TraderFilter=WeaponClass.Static.GetTraderFilter();
-	CTI.AltTraderFilter=WeaponClass.Static.GetAltTraderFilter();
-
-	if( WeaponClass.Default.SecondaryAmmoTexture != None )
-		CTI.SecondaryAmmoImagePath="img://"$PathName(WeaponClass.Default.SecondaryAmmoTexture);
-	CTI.InventoryGroup=WeaponClass.Default.InventoryGroup;
-	CTI.GroupPriority=WeaponClass.Default.GroupPriority;
-	WeaponClass.Static.SetTraderWeaponStats( CTI.WeaponStats);
 
 
 	return CTI;
@@ -735,7 +609,7 @@ defaultproperties
 	DefaultItems.Add("mac10.KFWeapDef_MAC10")
 //	DefaultItems.Add("mauser.KFWeapDef_DualMauser")
 //	DefaultItems.Add("mauser.KFWeapDef_Mauser")
-	DefaultItems.Add("mk42b.KFWeapDef_MK42B")
+//	DefaultItems.Add("mk42b.KFWeapDef_MK42B")
 //	DefaultItems.Add("nukeatw.KFWeapDef_NUKEAT")
 //	DefaultItems.Add("patriot.KFWeapDef_DualPatriot")
 //	DefaultItems.Add("patriot.KFWeapDef_Patriot")

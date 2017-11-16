@@ -1,5 +1,5 @@
 /*
- *  Trader Inventory Mutator
+ *  Trader Inventory Mutator Replication Link
  *
  *  (C) 2017 HickDead, Kavoh
  *
@@ -112,7 +112,7 @@ private reliable client final function bool AddWeapons()
 
 	if( WorldInfo == none )
 	{
-		`log( "===TIM=== no WI");
+		`Debug( "===TIM=== no WI");
 		return False;
 	}
 
@@ -128,7 +128,7 @@ private reliable client final function bool AddWeapons()
 	number=0;
 	foreach ClientItems( ClientItem, i)
 	{
-		item=class'TIMut'.Static.BuildWeapon( ClientItem.DefPath);
+		item=class'TIMut'.Static.LoadWeapon( ClientItem.DefPath);
 		item.ItemID=ClientItem.TraderId;
 
 		if( item.WeaponDef == none )
@@ -152,106 +152,6 @@ private reliable client final function bool AddWeapons()
 	KFGRI.TraderItems=TI;
 	return True;
 }
-
-
-private reliable client final function bool AddWeapons2()
-{
-	local KFGameReplicationInfo KFGRI;
-	local KFGFxObject_TraderItems TI;
-	local STraderItem item;
-	local int i, index, number, SaleItemsLength;
-
-
-	if( WorldInfo == none )
-		return False;
-
-	KFGRI=KFGameReplicationInfo(WorldInfo.GRI);
-	if( KFGRI == none )
-		return False;
-
-	TI=KFGRI.TraderItems;
-	if( TI == none )
-		return False;
-
-	SaleItemsLength=TI.SaleItems.Length;
-	if( SaleItemsLength < 1 )
-		return False;
-
-	if( OriginalInventorySize < 0 )
-		OriginalInventorySize=SaleItemsLength;
-
-
-	for( i=SaleItemsLength-OriginalInventorySize; i < ClientItems.Length; i++ )
-	{
-		`Debug("ClientItem["$i$"]:"@ClientItems[i].DefPath);
-
-		item=class'TIMut'.Static.BuildWeapon( ClientItems[i].DefPath);
-		item.ItemID=ClientItems[i].TraderId;
-
-		// item not on client?
-		if( item.WeaponDef == None )
-		{
-			`Debug("dropping unknown ClientItem["$i$"]: ("$item.ItemID$") -"@ClientItems[i].DefPath);
-
-			`log("===TIM=== ### CLIENT MISSING WEAPON! ###");
-			class'TIMut'.Static.LogToConsole( "===TIM=== ### CLIENT MISSING WEAPON! ### Disconnecting! -"@ClientItems[i].DefPath);
-			ConsoleCommand( "Disconnect");
-
-//			item=class'TIMut'.Static.BuildWeapon( "TIM.KFWeapDef_Unavailable");
-		}
-
-		// item ID already in trader inventory?
-		index=TI.SaleItems.Find('ItemID',item.ItemId);
-		if( index >= 0 )
-		{
-			`Debug("skipping present SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
-
-			if( TI.SaleItems[index].ClassName != item.ClassName )
-			{
-				`log("===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
-				class'TIMut'.Static.LogToConsole( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ### Disconnecting! - Please restart your client!");
-				ConsoleCommand( "Disconnect");
-			}
-
-			continue;
-		}
-
-
-		// item ClassName already in trader inventory? (really shouldn't happen)
-		index=TI.SaleItems.Find('ClassName',item.ClassName);
-		if( index >= 0 )
-		{
-			`Debug("skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
-
-			if( TI.SaleItems[index].ItemID != ClientItems[i].TraderId )
-			{
-				`log( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ###");
-				class'TIMut'.Static.LogToConsole( "===TIM=== ### TRADER INVENTORY OUT OF SYNC! ### Disconnecting! - Please restart your client!");
-				ConsoleCommand( "Disconnect");
-			}
-
-			continue;
-		}
-
-		`Debug("adding SaleItem["$TI.SaleItems.Length$"]: ("$item.ItemID$") -"@item.ClassName);
-		TI.SaleItems.AddItem( item);
-		number++;
-	}
-
-	if( number > 0 )
-		TI.SetItemsInfo( TI.SaleItems);
-
-	for( i=0; i < TI.SaleItems.Length; i++ )
-		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
-
-	`log("===TIM=== custom Weapons added to trader inventory:"@number);
-	if( number > 0 )
-		class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory:"@number);
-
-	return True;
-
-}
-
 
 
 
