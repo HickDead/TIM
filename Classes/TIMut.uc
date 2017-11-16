@@ -84,15 +84,95 @@ private final function AddNewWeaponsToConfig()
 	switch( iVersion )
 	{
 	case 1:
-		CustomItems.AddItem("WeaponPack.KFWeapDef_AUG9mm");
-		CustomItems.AddItem("WeaponPack.KFWeapDef_M60MG");
-		CustomItems.AddItem("WeaponPack.KFWeapDef_Spas12");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_AUG9mm");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_M60MG");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Spas12");
 	case 2:
-		CustomItems.AddItem("M16M203MDC.KFWeapDef_M16M203MDC");
+		CustomItems.AddItem( "M16M203MDC.KFWeapDef_M16M203MDC");
 	case 3:
-		CustomItems.AddItem("CDWM.KFWeapDef_AK47");
-		CustomItems.AddItem("CDWM.KFWeapDef_M4_2");
-		CustomItems.AddItem("CDWM.KFWeapDef_ZedTimeTBall2");
+
+		CustomItems.AddItem( "KFGame.KFWeapDef_Crovel");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Katana");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Nailgun");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Zweihander");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Pulverizer");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Eviscerator");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MaceAndShield");
+		CustomItems.AddItem( "KFGame.KFWeapDef_AR15");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Bullpup");
+		CustomItems.AddItem( "KFGame.KFWeapDef_AK12");
+		CustomItems.AddItem( "KFGame.KFWeapDef_SCAR");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Stoner63A");
+		CustomItems.AddItem( "KFGame.KFWeapDef_HX25");
+		CustomItems.AddItem( "KFGame.KFWeapDef_C4");
+		CustomItems.AddItem( "KFGame.KFWeapDef_M79");
+		CustomItems.AddItem( "KFGame.KFWeapDef_RPG7");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Seeker6");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MedicPistol");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MedicSMG");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MedicShotgun");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MedicRifle");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Remington1858");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Remington1858Dual");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Colt1911");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Colt1911Dual");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Deagle");
+		CustomItems.AddItem( "KFGame.KFWeapDef_DeagleDual");
+		CustomItems.AddItem( "KFGame.KFWeapDef_SW500");
+		CustomItems.AddItem( "KFGame.KFWeapDef_SW500Dual");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MB500");
+		CustomItems.AddItem( "KFGame.KFWeapDef_DoubleBarrel");
+		CustomItems.AddItem( "KFGame.KFWeapDef_HZ12");
+		CustomItems.AddItem( "KFGame.KFWeapDef_M4");
+		CustomItems.AddItem( "KFGame.KFWeapDef_AA12");
+		CustomItems.AddItem( "KFGame.KFWeapDef_CaulkBurn");
+		CustomItems.AddItem( "KFGame.KFWeapDef_FlareGun");
+		CustomItems.AddItem( "KFGame.KFWeapDef_FlareGunDual");
+		CustomItems.AddItem( "KFGame.KFWeapDef_DragonsBreath");
+		CustomItems.AddItem( "KFGame.KFWeapDef_FlameThrower");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MicrowaveGun");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Winchester1894");
+		CustomItems.AddItem( "KFGame.KFWeapDef_CenterfireMB464");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Crossbow");
+		CustomItems.AddItem( "KFGame.KFWeapDef_M14EBR");
+		CustomItems.AddItem( "KFGame.KFWeapDef_RailGun");
+		CustomItems.AddItem( "KFGame.KFWeapDef_9mm");
+		CustomItems.AddItem( "KFGame.KFWeapDef_9mmDual");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MP7");
+		CustomItems.AddItem( "KFGame.KFWeapDef_M16M203");
+		CustomItems.AddItem( "KFGame.KFWeapDef_MP5RAS");
+		CustomItems.AddItem( "KFGame.KFWeapDef_P90");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Kriss");
+		CustomItems.AddItem( "KFGame.KFWeapDef_Hemogoblin");
+
+		CustomItems.AddItem( "CDWM.KFWeapDef_AA12Dragon");
+		CustomItems.AddItem( "CDWM.KFWeapDef_AK47");
+		CustomItems.AddItem( "CDWM.KFWeapDef_BileThrower");
+		CustomItems.AddItem( "CDWM.KFWeapDef_FNC");
+		CustomItems.AddItem( "CDWM.KFWeapDef_HK416");
+		CustomItems.AddItem( "CDWM.KFWeapDef_M4_2");
+		CustomItems.AddItem( "CDWM.KFWeapDef_MK");
+		CustomItems.AddItem( "CDWM.KFWeapDef_DualMauser");
+		CustomItems.AddItem( "CDWM.KFWeapDef_Mauser");
+		CustomItems.AddItem( "CDWM.KFWeapDef_NUKEAT");
+		CustomItems.AddItem( "CDWM.KFWeapDef_RailGunZR2");
+		CustomItems.AddItem( "CDWM.KFWeapDef_Rifle_Barret50");
+		CustomItems.AddItem( "CDWM.KFWeapDef_ZedTimeTBall2");
+
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_AmmoBox");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_AUG9mm");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_DragonBlade");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_DualPatriot");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Glock");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_GlockDual");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_H134");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Healthpack");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_M60MG");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Patriot");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Skull9");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Spas12");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_SVD");
+	
 	case 4:
 		SaveSettings();
 	}
@@ -214,7 +294,7 @@ function GetSeamlessTravelActorList(bool bEntry, out array<Actor> Actors)
 
 event PostBeginPlay()
 {
-	`log("===TIM=== PostBeginPlay()");
+	`log("===TIM=== (v"$`VERSION$") PostBeginPlay()");
 	super.PostBeginPlay();
 	if( WorldInfo.Game.BaseMutator == None )
 		WorldInfo.Game.BaseMutator=Self;
@@ -245,6 +325,73 @@ final function bool AddWeapons()
 {
 	local KFGameReplicationInfo KFGRI;
 	local KFGFxObject_TraderItems TI;
+	local string CustomItem;
+	local STraderItem item;
+	local int i, index, number;
+	local SItem RepItem;
+
+
+	if( WorldInfo == none )
+	{
+		`log( "===TIM=== no WI");
+		return False;
+	}
+
+	KFGRI = KFGameReplicationInfo(WorldInfo.GRI);
+	if( KFGRI == none )
+	{
+		`Debug( "no KFGRI");
+		return False;
+	}
+
+	TI=new class'KFGFxObject_TraderItems';
+	KFGRI.TraderItems=TI;
+
+	number=0;
+	foreach CustomItems( CustomItem, i)
+	{
+		item=BuildWeapon( CustomItem);
+
+		if( item.WeaponDef == none )
+		{
+			`Debug("dropping unknown CustomItem["$i$"]:"@CustomItem);
+			continue;
+		}
+
+		index=TI.SaleItems.Find( 'ClassName', item.ClassName);
+		if( index >= 0 )
+		{
+			`Debug( "skipping duplicate SaleItem["$index$"]: ("$TI.SaleItems[index].ItemID$") -"@TI.SaleItems[index].ClassName);
+			continue;
+		}
+
+		RepItem.DefPath=CustomItem;
+		RepItem.TraderId=number;
+		ServerItems.AddItem( RepItem);
+
+		`Debug( "adding CustomItem["$i$"]:"@CustomItem);
+//		`Debug( "adding SaleItem["$TI.SaleItems.Length$"]: ("$number$") - "$CustomItem$);
+		item.ItemID=RepItem.TraderId;
+		TI.SaleItems.AddItem( item);
+
+		number++;
+	}
+
+	if( number > 0 )
+		TI.SetItemsInfo( TI.SaleItems);
+
+	`log("===TIM=== custom Weapons added to trader inventory: "$number);
+	LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory:"@number);
+
+
+	return True;
+}
+
+
+final function bool AddWeapons2()
+{
+	local KFGameReplicationInfo KFGRI;
+	local KFGFxObject_TraderItems TI;
 	local STraderItem item;
 	local int i, index, number, saleItemsLength, freeID;
 	local SItem RepItem;
@@ -253,7 +400,7 @@ final function bool AddWeapons()
 	if( WorldInfo == none )
 		return False;
 
-	KFGRI = KFGameReplicationInfo(WorldInfo.GRI);
+	KFGRI = KFGameReplicationInfo( WorldInfo.GRI);
 	if( KFGRI == none )
 		return False;
 
@@ -417,29 +564,61 @@ defaultproperties
 
 	OriginalInventorySize=-1
 
-	// Killing Floor 2 Official Weapons
-//	DefaultItems.Add("KFGame.KFWeapDef_9mm")
-//	DefaultItems.Add("KFGame.KFWeapDef_9mmDual")
-//	DefaultItems.Add("KFGame.KFWeapDef_AA12")
-//	DefaultItems.Add("KFGame.KFWeapDef_Ak12")
-//	DefaultItems.Add("KFGame.KFWeapDef_AR15")
-//	DefaultItems.Add("KFGame.KFWeapDef_Armor")
-//	DefaultItems.Add("KFGame.KFWeapDef_Bullpup")
-//	DefaultItems.Add("KFGame.KFWeapDef_C4")
-//	DefaultItems.Add("KFGame.KFWeapDef_CaulkBurn")
-//	DefaultItems.Add("KFGame.KFWeapDef_CenterfireMB464")
-//	DefaultItems.Add("KFGame.KFWeapDef_Colt1911")
-//	DefaultItems.Add("KFGame.KFWeapDef_Colt1911Dual")
-//	DefaultItems.Add("KFGame.KFWeapDef_Crossbow")
-//	DefaultItems.Add("KFGame.KFWeapDef_Crovel")
-//	DefaultItems.Add("KFGame.KFWeapDef_Deagle")
-//	DefaultItems.Add("KFGame.KFWeapDef_DeagleDual")
-//	DefaultItems.Add("KFGame.KFWeapDef_DoubleBarrel")
-//	DefaultItems.Add("KFGame.KFWeapDef_DragonsBreath")
-//	DefaultItems.Add("KFGame.KFWeapDef_Eviscerator")
-//	DefaultItems.Add("KFGame.KFWeapDef_FlameThrower")
-//	DefaultItems.Add("KFGame.KFWeapDef_FlareGun")
-//	DefaultItems.Add("KFGame.KFWeapDef_FlareGunDual")
+
+	// == Killing Floor 2 Official Weapons -- http://steamcommunity.com/app/232090/
+	DefaultItems.Add("KFGame.KFWeapDef_Crovel")
+	DefaultItems.Add("KFGame.KFWeapDef_Katana")
+	DefaultItems.Add("KFGame.KFWeapDef_Nailgun")
+	DefaultItems.Add("KFGame.KFWeapDef_Zweihander")
+	DefaultItems.Add("KFGame.KFWeapDef_Pulverizer")
+	DefaultItems.Add("KFGame.KFWeapDef_Eviscerator")
+	DefaultItems.Add("KFGame.KFWeapDef_MaceAndShield")
+	DefaultItems.Add("KFGame.KFWeapDef_AR15")
+	DefaultItems.Add("KFGame.KFWeapDef_Bullpup")
+	DefaultItems.Add("KFGame.KFWeapDef_AK12")
+	DefaultItems.Add("KFGame.KFWeapDef_SCAR")
+	DefaultItems.Add("KFGame.KFWeapDef_Stoner63A")
+	DefaultItems.Add("KFGame.KFWeapDef_HX25")
+	DefaultItems.Add("KFGame.KFWeapDef_C4")
+	DefaultItems.Add("KFGame.KFWeapDef_M79")
+	DefaultItems.Add("KFGame.KFWeapDef_RPG7")
+	DefaultItems.Add("KFGame.KFWeapDef_Seeker6")
+	DefaultItems.Add("KFGame.KFWeapDef_MedicPistol")
+	DefaultItems.Add("KFGame.KFWeapDef_MedicSMG")
+	DefaultItems.Add("KFGame.KFWeapDef_MedicShotgun")
+	DefaultItems.Add("KFGame.KFWeapDef_MedicRifle")
+	DefaultItems.Add("KFGame.KFWeapDef_Remington1858")
+	DefaultItems.Add("KFGame.KFWeapDef_Remington1858Dual")
+	DefaultItems.Add("KFGame.KFWeapDef_Colt1911")
+	DefaultItems.Add("KFGame.KFWeapDef_Colt1911Dual")
+	DefaultItems.Add("KFGame.KFWeapDef_Deagle")
+	DefaultItems.Add("KFGame.KFWeapDef_DeagleDual")
+	DefaultItems.Add("KFGame.KFWeapDef_SW500")
+	DefaultItems.Add("KFGame.KFWeapDef_SW500Dual")
+	DefaultItems.Add("KFGame.KFWeapDef_MB500")
+	DefaultItems.Add("KFGame.KFWeapDef_DoubleBarrel")
+	DefaultItems.Add("KFGame.KFWeapDef_HZ12")
+	DefaultItems.Add("KFGame.KFWeapDef_M4")
+	DefaultItems.Add("KFGame.KFWeapDef_AA12")
+	DefaultItems.Add("KFGame.KFWeapDef_CaulkBurn")
+	DefaultItems.Add("KFGame.KFWeapDef_FlareGun")
+	DefaultItems.Add("KFGame.KFWeapDef_FlareGunDual")
+	DefaultItems.Add("KFGame.KFWeapDef_DragonsBreath")
+	DefaultItems.Add("KFGame.KFWeapDef_FlameThrower")
+	DefaultItems.Add("KFGame.KFWeapDef_MicrowaveGun")
+	DefaultItems.Add("KFGame.KFWeapDef_Winchester1894")
+	DefaultItems.Add("KFGame.KFWeapDef_CenterfireMB464")
+	DefaultItems.Add("KFGame.KFWeapDef_Crossbow")
+	DefaultItems.Add("KFGame.KFWeapDef_M14EBR")
+	DefaultItems.Add("KFGame.KFWeapDef_RailGun")
+	DefaultItems.Add("KFGame.KFWeapDef_9mm")
+	DefaultItems.Add("KFGame.KFWeapDef_9mmDual")
+	DefaultItems.Add("KFGame.KFWeapDef_MP7")
+	DefaultItems.Add("KFGame.KFWeapDef_M16M203")
+	DefaultItems.Add("KFGame.KFWeapDef_MP5RAS")
+	DefaultItems.Add("KFGame.KFWeapDef_P90")
+	DefaultItems.Add("KFGame.KFWeapDef_Kriss")
+	DefaultItems.Add("KFGame.KFWeapDef_Hemogoblin")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Berserker")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Commando")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Demo")
@@ -449,10 +628,8 @@ defaultproperties
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Sharpshooter")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_Support")
 //	DefaultItems.Add("KFGame.KFWeapDef_Grenade_SWAT")
-////	DefaultItems.Add("KFGame.KFWeapDef_Healer")
-//	DefaultItems.Add("KFGame.KFWeapDef_HX25")
-//	DefaultItems.Add("KFGame.KFWeapDef_HZ12")
-//	DefaultItems.Add("KFGame.KFWeapDef_Katana")
+//	DefaultItems.Add("KFGame.KFWeapDef_Healer")
+//	DefaultItems.Add("KFGame.KFWeapDef_Knife_Berserker")
 //	DefaultItems.Add("KFGame.KFWeapDef_Knife_Commando")
 //	DefaultItems.Add("KFGame.KFWeapDef_Knife_Demo")
 //	DefaultItems.Add("KFGame.KFWeapDef_Knife_Firebug")
@@ -461,35 +638,8 @@ defaultproperties
 //	DefaultItems.Add("KFGame.KFWeapDef_Knife_Sharpshooter")
 //	DefaultItems.Add("KFGame.KFWeapDef_Knife_Support")
 //	DefaultItems.Add("KFGame.KFWeapDef_Knife_SWAT")
-//	DefaultItems.Add("KFGame.KFWeapDef_Kriss")
-//	DefaultItems.Add("KFGame.KFWeapDef_M14EBR")
-//	DefaultItems.Add("KFGame.KFWeapDef_M16M203")
-//	DefaultItems.Add("KFGame.KFWeapDef_M4")
-//	DefaultItems.Add("KFGame.KFWeapDef_M79")
-//	DefaultItems.Add("KFGame.KFWeapDef_MaceAndShield")
-//	DefaultItems.Add("KFGame.KFWeapDef_MB500")
-//	DefaultItems.Add("KFGame.KFWeapDef_MedicPistol")
-//	DefaultItems.Add("KFGame.KFWeapDef_MedicRifle")
-//	DefaultItems.Add("KFGame.KFWeapDef_MedicShotgun")
-//	DefaultItems.Add("KFGame.KFWeapDef_MedicSMG")
-//	DefaultItems.Add("KFGame.KFWeapDef_MicrowaveGun")
-//	DefaultItems.Add("KFGame.KFWeapDef_MP5RAS")
-//	DefaultItems.Add("KFGame.KFWeapDef_MP7")
-//	DefaultItems.Add("KFGame.KFWeapDef_NailGun")
-//	DefaultItems.Add("KFGame.KFWeapDef_P90")
-//	DefaultItems.Add("KFGame.KFWeapDef_Pulverizer")
-//	DefaultItems.Add("KFGame.KFWeapDef_RailGun")
-////	DefaultItems.Add("KFGame.KFWeapDef_Random")
-//	DefaultItems.Add("KFGame.KFWeapDef_Remington1858")
-//	DefaultItems.Add("KFGame.KFWeapDef_Remington1858Dual")
-//	DefaultItems.Add("KFGame.KFWeapDef_RPG7")
-//	DefaultItems.Add("KFGame.KFWeapDef_SCAR")
-//	DefaultItems.Add("KFGame.KFWeapDef_Stoner63A")
-//	DefaultItems.Add("KFGame.KFWeapDef_SW500")
-//	DefaultItems.Add("KFGame.KFWeapDef_SW500Dual")
-////	DefaultItems.Add("KFGame.KFWeapDef_Welder")
-//	DefaultItems.Add("KFGame.KFWeapDef_Winchester1894")
-//	DefaultItems.Add("KFGame.KFWeapDef_Zweihander")
+//	DefaultItems.Add("KFGame.KFWeapDef_Random")
+//	DefaultItems.Add("KFGame.KFWeapDef_Welder")
 
 
 	// == Unofficial Weapons Pack -- http://steamcommunity.com/sharedfiles/filedetails/?id=679839492 *
@@ -503,7 +653,7 @@ defaultproperties
 	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_HuskCannon")
 	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_M32")
 //	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_M99")
-	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_Mac10")
+//	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_Mac10")
 	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_MKB42")
 	DefaultItems.Add("KFGameHuskLauncher.KFWeapDef_PPSH")
 
@@ -573,23 +723,23 @@ defaultproperties
 	DefaultItems.Add("Armory.KFWeapDef_VAL")
 
 	// == LordOfWar Weapon Mutator -- http://steamcommunity.com/sharedfiles/filedetails/?id=890082699
-	DefaultItems.Add("AA12Dragon.KFWeapDef_AA12Dragon")
-	DefaultItems.Add("ammobox2.KFWeapDef_AmmoBox")
-	DefaultItems.Add("barretw.KFWeapDef_Rifle_Barret50")
-	DefaultItems.Add("BileThrower.KFWeapDef_BileThrower")
-	DefaultItems.Add("hkm14w.KFWeapDef_HK416")
+//	DefaultItems.Add("AA12Dragon.KFWeapDef_AA12Dragon")
+//	DefaultItems.Add("ammobox2.KFWeapDef_AmmoBox")
+//	DefaultItems.Add("barretw.KFWeapDef_Rifle_Barret50")
+//	DefaultItems.Add("BileThrower.KFWeapDef_BileThrower")
+//	DefaultItems.Add("hkm14w.KFWeapDef_HK416")
 	DefaultItems.Add("louiville.KFWeapDef_Bat")
-	DefaultItems.Add("m60.KFWeapDef_M60")
+//	DefaultItems.Add("m60.KFWeapDef_M60")
 	DefaultItems.Add("m79medic.KFWeapDef_M79M")
 	DefaultItems.Add("m79ss.KFWeapDef_M79SS")
 	DefaultItems.Add("mac10.KFWeapDef_MAC10")
-	DefaultItems.Add("mauser.KFWeapDef_DualMauser")
-	DefaultItems.Add("mauser.KFWeapDef_Mauser")
+//	DefaultItems.Add("mauser.KFWeapDef_DualMauser")
+//	DefaultItems.Add("mauser.KFWeapDef_Mauser")
 	DefaultItems.Add("mk42b.KFWeapDef_MK42B")
-	DefaultItems.Add("nukeatw.KFWeapDef_NUKEAT")
-	DefaultItems.Add("patriot.KFWeapDef_DualPatriot")
-	DefaultItems.Add("patriot.KFWeapDef_Patriot")
-	DefaultItems.Add("railgunzr2.KFWeapDef_RailGunZR2")
+//	DefaultItems.Add("nukeatw.KFWeapDef_NUKEAT")
+//	DefaultItems.Add("patriot.KFWeapDef_DualPatriot")
+//	DefaultItems.Add("patriot.KFWeapDef_Patriot")
+//	DefaultItems.Add("railgunzr2.KFWeapDef_RailGunZR2")
 	DefaultItems.Add("TF2SentryModV2.SentryWeaponDef")
 	DefaultItems.Add("tommygun.KFWeapDef_TommyGun")
 
@@ -601,20 +751,20 @@ defaultproperties
 	DefaultItems.Add("CustomM14s.KFWeapDef_IronSightM14EBR")
 
 	// == CD Weapons Mod -- http://steamcommunity.com/sharedfiles/filedetails/?id=969556681
-//	DefaultItems.Add("CDWM.KFWeapDef_AA12Dragon")
+	DefaultItems.Add("CDWM.KFWeapDef_AA12Dragon")
 	DefaultItems.Add("CDWM.KFWeapDef_AK47")
 //	DefaultItems.Add("CDWM.KFWeapDef_AmmoBox")
-//	DefaultItems.Add("CDWM.KFWeapDef_BileThrower")
-//	DefaultItems.Add("CDWM.KFWeapDef_DualMauser")
-//	DefaultItems.Add("CDWM.KFWeapDef_FNC")
-//	DefaultItems.Add("CDWM.KFWeapDef_HK416")
+	DefaultItems.Add("CDWM.KFWeapDef_BileThrower")
+	DefaultItems.Add("CDWM.KFWeapDef_FNC")
+	DefaultItems.Add("CDWM.KFWeapDef_HK416")
 	DefaultItems.Add("CDWM.KFWeapDef_M4_2")
 //	DefaultItems.Add("CDWM.KFWeapDef_M60")
-//	DefaultItems.Add("CDWM.KFWeapDef_MK")
-//	DefaultItems.Add("CDWM.KFWeapDef_Mauser")
-//	DefaultItems.Add("CDWM.KFWeapDef_NUKEAT")
-//	DefaultItems.Add("CDWM.KFWeapDef_RailGunZR2")
-//	DefaultItems.Add("CDWM.KFWeapDef_Rifle_Barret50")
+	DefaultItems.Add("CDWM.KFWeapDef_MK")
+	DefaultItems.Add("CDWM.KFWeapDef_DualMauser")
+	DefaultItems.Add("CDWM.KFWeapDef_Mauser")
+	DefaultItems.Add("CDWM.KFWeapDef_NUKEAT")
+	DefaultItems.Add("CDWM.KFWeapDef_RailGunZR2")
+	DefaultItems.Add("CDWM.KFWeapDef_Rifle_Barret50")
 //	DefaultItems.Add("CDWM.KFWeapDef_SVD")
 	DefaultItems.Add("CDWM.KFWeapDef_ZedTimeTBall2")
 
@@ -641,11 +791,21 @@ defaultproperties
 	// == M99 Sniper rifle -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137411101
 	DefaultItems.Add("M99.KFWeapDef_M99")
 
+
 	// == Weapon Pack -- http://steamcommunity.com/sharedfiles/filedetails/?id=1147408497
+	DefaultItems.Add("WeaponPack.KFWeapDef_AmmoBox")
 	DefaultItems.Add("WeaponPack.KFWeapDef_AUG9mm")
+	DefaultItems.Add("WeaponPack.KFWeapDef_DragonBlade")
+	DefaultItems.Add("WeaponPack.KFWeapDef_Glock")
+	DefaultItems.Add("WeaponPack.KFWeapDef_GlockDual")
+	DefaultItems.Add("WeaponPack.KFWeapDef_H134")
+	DefaultItems.Add("WeaponPack.KFWeapDef_Healthpack")
 	DefaultItems.Add("WeaponPack.KFWeapDef_M60MG")
+	DefaultItems.Add("WeaponPack.KFWeapDef_DualPatriot")
+	DefaultItems.Add("WeaponPack.KFWeapDef_Patriot")
+	DefaultItems.Add("WeaponPack.KFWeapDef_Skull9")
 	DefaultItems.Add("WeaponPack.KFWeapDef_Spas12")
-//	DefaultItems.Add("WeaponPack.KFWeapDef_SVD")
+	DefaultItems.Add("WeaponPack.KFWeapDef_SVD")
 
 	// == M16M203MDC -- http://steamcommunity.com/sharedfiles/filedetails/?id=1150733214
 	DefaultItems.Add("M16M203MDC.KFWeapDef_M16M203MDC")

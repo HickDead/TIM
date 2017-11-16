@@ -78,7 +78,7 @@ private reliable client final function ClientSyncItem(string DefPath, int Trader
 private reliable client final function ClientSyncFinished()
 {
 
-	`log("===TIM=== ClientSyncFinished():"@ClientItems.Length@"items");
+	`log("===TIM=== (v"$`VERSION$") ClientSyncFinished():"@ClientItems.Length@"items");
 
 	if( ! AddWeapons() )
 		SetTimer( 0.1f, true, nameof(addWeaponsTimer));
@@ -100,7 +100,61 @@ simulated function addWeaponsTimer()
 
 }
 
+
 private reliable client final function bool AddWeapons()
+{
+	local KFGameReplicationInfo KFGRI;
+	local KFGFxObject_TraderItems TI;
+	local SItem ClientItem;
+	local STraderItem item;
+	local int i, number;
+
+
+	if( WorldInfo == none )
+	{
+		`log( "===TIM=== no WI");
+		return False;
+	}
+
+	KFGRI=KFGameReplicationInfo( WorldInfo.GRI);
+	if( KFGRI == none )
+	{
+		`Debug( "no KFGRI");
+		return False;
+	}
+
+	TI=new class'KFGFxObject_TraderItems';
+
+	number=0;
+	foreach ClientItems( ClientItem, i)
+	{
+		item=class'TIMut'.Static.BuildWeapon( ClientItem.DefPath);
+		item.ItemID=ClientItem.TraderId;
+
+		if( item.WeaponDef == none )
+		{
+			`log( "===TIM=== ### CLIENT MISSING ITEM! ### Disconnecting! - "$ClientItem.DefPath);
+			class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") ### CLIENT MISSING WEAPON! ### Disconnecting! - "$ClientItem.DefPath);
+			ConsoleCommand( "Disconnect");
+		}
+
+		`Debug( "adding SaleItem["$TI.SaleItems.Length$"]: ("$ClientItem.TraderId$") - "$ClientItem.DefPath);
+		TI.SaleItems.AddItem( item);
+		number++;
+	}
+
+	if( number > 0 )
+		TI.SetItemsInfo( TI.SaleItems);
+
+	`log( "===TIM=== custom Weapons added to trader inventory: "$number);
+	class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory: "$number);
+
+	KFGRI.TraderItems=TI;
+	return True;
+}
+
+
+private reliable client final function bool AddWeapons2()
 {
 	local KFGameReplicationInfo KFGRI;
 	local KFGFxObject_TraderItems TI;
@@ -184,8 +238,8 @@ private reliable client final function bool AddWeapons()
 		number++;
 	}
 
-//	if( number > 0 )
-//		TI.SetItemsInfo( TI.SaleItems);
+	if( number > 0 )
+		TI.SetItemsInfo( TI.SaleItems);
 
 	for( i=0; i < TI.SaleItems.Length; i++ )
 		`Debug("SaleItem["$i$"]: ("$TI.SaleItems[i].ItemID$") -"@TI.SaleItems[i].WeaponDef.Name@"-"@TI.SaleItems[i].ClassName);
