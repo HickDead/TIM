@@ -1,6 +1,28 @@
 // TIM - Globals.uci
 
-// increment this after the mod gets uploaded to the workshop.
-`define VERSION 4
 
-`define Debug(Text) if( bDebugLog ) LogInternal("===TIM=== " $ `{Text})
+// increment this after the mod gets uploaded to the workshop.
+`define VERSION 5
+
+
+`define MOD_AUTHOR HickDead
+`define MOD_NAME TIM
+
+`define DEBUG_MODE
+
+`define LogCat(Category, Text) LogInternal("[`MOD_NAME] [`Category] " $ `Text)
+
+`define LogInfo(Text) `LogCat(INFO, `Text)
+`define LogWarning(Text) `LogCat(WARNING, `Text)
+`define LogError(Text) `LogCat(ERROR, `Text)
+
+`if(`isdefined(DEBUG_MODE))
+//	`define Debug(Text) `LogCat(DEBUG, "[" $ PathName(Default.Class) $ "." $ string(GetFuncName()) $ "] " $ `Text)
+	`define Debug(Text) if( bDebugLog ) `LogCat(DEBUG, "[" $ PathName(Default.Class) $ "." $ string(GetFuncName()) $ "] " $ `Text)
+`else
+	`define Debug(Text)
+`endif
+
+
+
+//`define Debug(Text) if( bDebugLog ) LogInternal("===TIM=== " $ `{Text})

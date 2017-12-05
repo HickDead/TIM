@@ -19,12 +19,13 @@ struct SItem
 var /*private*/ array<SItem> ClientItems;
 
 var private int CurrentIndex;
-var private int OriginalInventorySize;
 var config bool bDebugLog;
+var config int Retries;
 
 
 static final function SaveSettings()
 {
+	Default.Retries=10;
 	Default.bDebugLog=True;
 	StaticSaveConfig();
 }
@@ -78,30 +79,36 @@ private reliable client final function ClientSyncItem(string DefPath, int Trader
 private reliable client final function ClientSyncFinished()
 {
 
-	`log("===TIM=== (v"$`VERSION$") ClientSyncFinished():"@ClientItems.Length@"items");
+	`logInfo("(v"$`VERSION$") ClientSyncFinished(): " $ ClientItems.Length@"items");
 
-	if( ! AddWeapons() )
-		SetTimer( 0.1f, true, nameof(addWeaponsTimer));
+	if( Retries < 1 )
+	{
+		`LogInfo( "Updating config");
+		SaveSettings();
+		Retries=Default.Retries;
+	}
+
+	if( ! AddClientItems() )
+		SetTimer( 1.0f, true, nameof(ClientTimer));
 	else
 	 	CleanupRepLink(true);
-
 
 }
 
 
-simulated function addWeaponsTimer()
+simulated function ClientTimer()
 {
 
-	if( AddWeapons() )
+	if( AddClientItems() )
 	{
-		ClearTimer( nameof(addWeaponsTimer));
+		ClearTimer( nameof(ClientTimer));
 	 	CleanupRepLink(true);
 	}
 
 }
 
 
-private reliable client final function bool AddWeapons()
+private reliable client final function bool AddClientItems()
 {
 	local KFGameReplicationInfo KFGRI;
 	local KFGFxObject_TraderItems TI;
@@ -112,7 +119,7 @@ private reliable client final function bool AddWeapons()
 
 	if( WorldInfo == none )
 	{
-		`Debug( "===TIM=== no WI");
+		`Debug( "no WI");
 		return False;
 	}
 
@@ -128,17 +135,24 @@ private reliable client final function bool AddWeapons()
 	number=0;
 	foreach ClientItems( ClientItem, i)
 	{
-		item=class'TIMut'.Static.LoadWeapon( ClientItem.DefPath);
-		item.ItemID=ClientItem.TraderId;
-
+		item.WeaponDef=class<KFWeaponDefinition>(DynamicLoadObject(ClientItem.DefPath,class'Class'));
 		if( item.WeaponDef == none )
 		{
-			`log( "===TIM=== ### CLIENT MISSING ITEM! ### Disconnecting! - "$ClientItem.DefPath);
-			class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") ### CLIENT MISSING WEAPON! ### Disconnecting! - "$ClientItem.DefPath);
+			if( Retries > 0 )
+			{
+				`logError( "### CLIENT MISSING " $ ClientItem.DefPath $ " ### Attempts left: " $ Retries--);
+				return False;
+			}
+
+			`logError( "### CLIENT MISSING ITEM! ### Disconnecting! - " $ ClientItem.DefPath);
+			class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") ### CLIENT MISSING ITEM! ### Disconnecting! - " $ ClientItem.DefPath);
 			ConsoleCommand( "Disconnect");
+			return True;
+
 		}
 
-		`Debug( "adding SaleItem["$TI.SaleItems.Length$"]: ("$ClientItem.TraderId$") - "$ClientItem.DefPath);
+		`Debug( "adding SaleItem[" $ TI.SaleItems.Length $ "]: (" $ ClientItem.TraderId $ ") - " $ ClientItem.DefPath);
+		item.ItemID=ClientItem.TraderId;
 		TI.SaleItems.AddItem( item);
 		number++;
 	}
@@ -146,8 +160,8 @@ private reliable client final function bool AddWeapons()
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-	`log( "===TIM=== custom Weapons added to trader inventory: "$number);
-	class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") custom Weapons added to trader inventory: "$number);
+	`logInfo( "Items added to trader inventory: " $ number);
+	class'TIMut'.Static.LogToConsole( "===TIM=== (v"$`VERSION$") Items added to trader inventory: " $ number);
 
 	KFGRI.TraderItems=TI;
 	return True;
@@ -157,10 +171,9 @@ private reliable client final function bool AddWeapons()
 
 defaultproperties
 {
+
 	bAlwaysRelevant=false
 	bOnlyRelevantToOwner=true
-
-	OriginalInventorySize=-1;
 
 	Name="Default__TIMRepLink"
 	ObjectArchetype=ReplicationInfo'Engine.Default__ReplicationInfo'
