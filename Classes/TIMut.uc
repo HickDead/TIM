@@ -48,7 +48,7 @@ static final function LogToConsole(string Text)
             TheConsole = KFGVC.ViewportConsole;
             
             if (TheConsole != none)
-                TheConsole.OutputText(Text);
+                TheConsole.OutputText( "[TIM] (v" $ `VERSION $ ") " $ Text);
         }
     }
 }
@@ -57,6 +57,7 @@ static final function LogToConsole(string Text)
 private final function LoadSettings()
 {
 
+	`DebugFlow( ".");
 	`logInfo( "Code version: "$`VERSION$", config version: "$iVersion);
 
 
@@ -69,6 +70,8 @@ private final function LoadSettings()
 
 private final function InitSettings()
 {
+
+	`DebugFlow( ".");
 
 	if( CustomItems.Length < 1 )
 	{
@@ -86,6 +89,8 @@ private final function InitSettings()
 
 private final function AddNewItemsToConfig()
 {
+
+	`DebugFlow( ".");
 
 	switch( iVersion )
 	{
@@ -236,6 +241,7 @@ private final function AddNewItemsToConfig()
 private final function ResetSettings()
 {
 
+	`DebugFlow( ".");
 	`LogInfo( "Resetting config");
 	bAddNewWeaponsToConfig=True;
 	bDebugLog=True;
@@ -247,6 +253,7 @@ private final function ResetSettings()
 private final function SaveSettings()
 {
 
+	`DebugFlow( ".");
 	iVersion=`VERSION;
     
 	SaveConfig();
@@ -278,6 +285,8 @@ private final function DestroyRepLink(Controller C)
     local KFPlayerController KFPC;
     local int Index;
     
+    `DebugFlow( ".");
+
     KFPC = KFPlayerController(C);
     
     if (KFPC == none)
@@ -298,6 +307,8 @@ private final function DestroyClients()
 {
     local SClient RepClient;
     
+    `DebugFlow( ".");
+
     foreach RepClients(RepClient)
     {
         if (RepClient.RepLink != none)
@@ -311,6 +322,8 @@ private final function SyncClients()
 {
     local SClient RepClient;
     
+    `DebugFlow( ".");
+
     bRepReady = true;
     
     foreach RepClients(RepClient)
@@ -321,12 +334,16 @@ private final function SyncClients()
 
 private final function SyncClient(SClient RepClient)
 {
+	`DebugFlow( ".");
+
 	RepClient.RepLink.ClientItems=ServerItems;
 	RepClient.RepLink.StartSyncItems();
 }
 
 function NotifyLogin(Controller C)
 {
+    `DebugFlow( ".");
+
     CreateRepLink(C);
     
     Super.NotifyLogin(C);
@@ -334,6 +351,8 @@ function NotifyLogin(Controller C)
 
 function NotifyLogout(Controller C)
 {
+    `DebugFlow( ".");
+
     DestroyRepLink(C);
     
     Super.NotifyLogout(C);
@@ -341,6 +360,8 @@ function NotifyLogout(Controller C)
 
 function GetSeamlessTravelActorList(bool bEntry, out array<Actor> Actors)
 {
+    `DebugFlow( ".");
+
     DestroyClients();
     
     Super.GetSeamlessTravelActorList(bEntry, Actors);
@@ -350,14 +371,17 @@ function GetSeamlessTravelActorList(bool bEntry, out array<Actor> Actors)
 
 event PreBeginPlay()
 {
-	`Debug( "");
+	`DebugFlow( ".");
+
 	Super.PreBeginPlay();
 }
 
 
 event PostBeginPlay()
 {
-	`Debug( "Initializing");
+
+	`DebugFlow( ".");
+
 	super.PostBeginPlay();
 
 	if( WorldInfo.Game.BaseMutator == None )
@@ -374,13 +398,16 @@ event PostBeginPlay()
 
 function InitMutator(string Options, out string ErrorMessage)
 {
-	`Debug( "");
+	`DebugFlow( ".");
+
 	super.InitMutator( Options, ErrorMessage );
 }
 
 
 private function ItemsTimer()
 {
+
+	`DebugFlow( ".");
 
 	if( AddItems() )
 	{
@@ -400,6 +427,8 @@ final function bool AddItems()
 	local int i, number;
 	local SItem RepItem;
 
+
+	`DebugFlow( ".");
 
 	if( WorldInfo == none )
 	{
@@ -441,7 +470,7 @@ final function bool AddItems()
 		TI.SetItemsInfo( TI.SaleItems);
 
 	`logInfo("Items added to trader inventory: "$number);
-	LogToConsole( "===TIM=== (v"$`VERSION$") Items added to trader inventory: "$ number);
+	LogToConsole( "Items added to trader inventory: "$ number);
 
 	KFGRI.TraderItems=TI;
 	return True;
@@ -450,6 +479,8 @@ final function bool AddItems()
 
 function AddMutator(Mutator M)
 {
+	`DebugFlow( ".");
+
 	// The buck stops with us.
 	if( M != Self )
 	{

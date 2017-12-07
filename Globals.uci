@@ -13,16 +13,16 @@
 `define LogCat(Category, Text) LogInternal("[`MOD_NAME] [`Category] " $ `Text)
 
 `define LogInfo(Text) `LogCat(INFO, `Text)
-`define LogWarning(Text) `LogCat(WARNING, `Text)
+`define LogWarn(Text) `LogCat(WARNING, `Text)
 `define LogError(Text) `LogCat(ERROR, `Text)
 
 `if(`isdefined(DEBUG_MODE))
 //	`define Debug(Text) `LogCat(DEBUG, "[" $ PathName(Default.Class) $ "." $ string(GetFuncName()) $ "] " $ `Text)
-	`define Debug(Text) if( bDebugLog ) `LogCat(DEBUG, "[" $ PathName(Default.Class) $ "." $ string(GetFuncName()) $ "] " $ `Text)
+	`define DebugFlow(Text) `LogCat(DEBUG, "[" $ PathName(Default.Class) $ "." $ string(GetFuncName()) $ "] " $ `Text)
 `else
-	`define Debug(Text)
+//	`define Debug(Text)
+	`define DebugFlow(Text)
 `endif
 
 
-
-//`define Debug(Text) if( bDebugLog ) LogInternal("===TIM=== " $ `{Text})
+`define Debug(Text) if( bDebugLog ) `LogCat(DEBUG, "[" $ PathName(Default.Class) $ "." $ string(GetFuncName()) $ "] " $ `Text)
