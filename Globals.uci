@@ -8,7 +8,7 @@
 `define MOD_AUTHOR HickDead
 `define MOD_NAME TIM
 
-`define DEBUG_MODE
+//`define DEBUG_MODE
 
 `define LogCat(Category, Text) LogInternal("[`MOD_NAME] [`Category] " $ `Text)
 

@@ -451,7 +451,7 @@ final function bool AddItems()
 		item.WeaponDef=class<KFWeaponDefinition>(DynamicLoadObject(CustomItem,class'Class'));
 		if( item.WeaponDef == none )
 		{
-			`Debug("dropping unknown CustomItem["$i$"]: "$ CustomItem);
+			`logInfo( "dropping unknown CustomItem["$i$"]: "$ CustomItem);
 			continue;
 		}
 
@@ -459,7 +459,7 @@ final function bool AddItems()
 		RepItem.TraderId=number;
 		ServerItems.AddItem( RepItem);
 
-		`Debug( "adding CustomItem["$i$"]: " $ CustomItem);
+		`logInfo( "adding CustomItem["$i$"]: " $ CustomItem);
 		item.ItemID=RepItem.TraderId;
 		TI.SaleItems.AddItem( item);
 
@@ -469,7 +469,7 @@ final function bool AddItems()
 	if( number > 0 )
 		TI.SetItemsInfo( TI.SaleItems);
 
-	`logInfo("Items added to trader inventory: "$number);
+	`logInfo( "Items added to trader inventory: "$number);
 	LogToConsole( "Items added to trader inventory: "$ number);
 
 	KFGRI.TraderItems=TI;

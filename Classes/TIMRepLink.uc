@@ -28,7 +28,7 @@ static final function SaveSettings()
 
 	`DebugFlow( ".");
 
-	Default.iRetries=10;
+	Default.iRetries=3;
 	Default.bDebugLog=True;
 	StaticSaveConfig();
 }
@@ -100,21 +100,31 @@ private reliable client final function ClientSyncFinished()
 		iRetries=Default.iRetries;
 	}
 
-	ClientTimer();
+	Timer();
 
 }
 
 
-simulated function ClientTimer()
+simulated event Timer()
 {
 
 	`DebugFlow( ".");
 
+/*
+// This doesn't work as for some unknown reason the timer isn't firing...
+
 	if( AddClientItems() )
 	 	CleanupRepLink(true);
 	else
-		SetTimer( 1.0f, false, nameof(ClientTimer));
-	
+		SetTimer( 1.0f);
+*/
+
+// So we just do it in a loop without the 1 second delay instead
+
+	while( ! AddClientItems() )
+		;
+
+ 	CleanupRepLink(true);
 
 }
 
@@ -149,30 +159,23 @@ private simulated final function bool AddClientItems()
 	foreach ClientItems( ClientItem, i)
 	{
 		item.WeaponDef=class<KFWeaponDefinition>(DynamicLoadObject(ClientItem.DefPath,class'Class'));
+
 		if( item.WeaponDef == none )
 		{
-/*
-// This doesn't work as for some reason the timer isn't firing...
 			if( iRetries > 0 )
 			{
-				`logWarn( "### CLIENT MISSING " $ ClientItem.DefPath $ " ### Attempts left: " $ iRetries--);
+				`logWarn( "CLIENT MISSING " $ ClientItem.DefPath $ " ### Attempts left: " $ iRetries--);
 				return False;
 			}
-*/
-			`logError( "### CLIENT MISSING ITEM! ### Disconnecting! - " $ ClientItem.DefPath);
-			class'TIMut'.Static.LogToConsole( "### CLIENT MISSING ITEM! ### Disconnecting! - " $ ClientItem.DefPath);
+
+			`logError( "CLIENT MISSING ITEM! ### Disconnecting! - " $ ClientItem.DefPath);
+			class'TIMut'.Static.LogToConsole( "CLIENT MISSING ITEM! ### Disconnecting! - " $ ClientItem.DefPath);
 			ConsoleCommand( "Disconnect");
 			return True;
 
 		}
 
-/**/
-// simulate faillure as I can't reproduce the issue myself
-class'TIMut'.Static.LogToConsole( "Broken testversion, please inform HickDead he screwed up!");
-`Debug( "Broken testversion, please inform HickDead he screwed up!");
-return False;		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-/**/
-		`Debug( "adding SaleItem[" $ TI.SaleItems.Length $ "]: (" $ ClientItem.TraderId $ ") - " $ ClientItem.DefPath);
+		`logInfo( "adding SaleItem[" $ TI.SaleItems.Length $ "]: (" $ ClientItem.TraderId $ ") - " $ ClientItem.DefPath);
 		item.ItemID=ClientItem.TraderId;
 		TI.SaleItems.AddItem( item);
 		number++;
