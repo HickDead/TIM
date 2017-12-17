@@ -94,12 +94,15 @@ private final function AddNewItemsToConfig()
 
 	switch( iVersion )
 	{
+
 	case 1:
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_AUG9mm");
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_M60MG");
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_Spas12");
+
 	case 2:
 		CustomItems.AddItem( "M16M203MDC.KFWeapDef_M16M203MDC");
+
 	case 3:
 		CustomItems.AddItem( "KFGame.KFWeapDef_Crovel");
 		CustomItems.AddItem( "KFGame.KFWeapDef_Katana");
@@ -182,6 +185,7 @@ private final function AddNewItemsToConfig()
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_Skull9");
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_Spas12");
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_SVD");
+
 	case 4:
 		CustomItems.RemoveItem( "AA12Dragon.KFWeapDef_AA12Dragon");
 		CustomItems.RemoveItem( "ammobox2.KFWeapDef_AmmoBox");
@@ -232,6 +236,24 @@ private final function AddNewItemsToConfig()
 		CustomItems.AddItem( "gunz.KFWeapDef_ZedTimeTBall2");
 
 	case 5:
+		CustomItems.AddItem( "KFGame.KFWeapDef_FreezeThrower");
+		CustomItems.AddItem( "KFGame.KFWeapDef_HK_UMP");
+		CustomItems.AddItem( "KFGameHuskLauncher.KFWeapDef_M99");
+		CustomItems.AddItem( "CustomM14s.KFWeapDef_CustomM14EBR");
+		CustomItems.AddItem( "CDWM.KFWeapDef_AmmoBox");
+		CustomItems.AddItem( "CDWM.KFWeapDef_M60");
+		CustomItems.AddItem( "CDWM.KFWeapDef_SVD");
+
+	case 6:
+		CustomItems.RemoveItem( "Armory.KFWeapDef_FNFNC");
+		CustomItems.RemoveItem( "Armory.KFWeapDef_UMP");
+		CustomItems.AddItem( "Armory.KFWeapDef_XM177");
+		CustomItems.AddItem( "Armory.KFWeapDef_HiPower");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_AK74M");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Seeker3K");
+		CustomItems.AddItem( "WeaponPack.KFWeapDef_Spectre");
+
+	case 7:
 		`LogInfo( "Updating config");
 		SaveSettings();
 	}
@@ -554,7 +576,10 @@ defaultproperties
 	DefaultItems.Add( "KFGame.KFWeapDef_MP5RAS")
 	DefaultItems.Add( "KFGame.KFWeapDef_P90")
 	DefaultItems.Add( "KFGame.KFWeapDef_Kriss")
+	DefaultItems.Add( "KFGame.KFWeapDef_FreezeThrower")
 	DefaultItems.Add( "KFGame.KFWeapDef_Hemogoblin")
+	DefaultItems.Add( "KFGame.KFWeapDef_HK_UMP")
+
 //	DefaultItems.Add( "KFGame.KFWeapDef_Grenade_Berserker")
 //	DefaultItems.Add( "KFGame.KFWeapDef_Grenade_Commando")
 //	DefaultItems.Add( "KFGame.KFWeapDef_Grenade_Demo")
@@ -588,7 +613,7 @@ defaultproperties
 	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_FlareDual")
 	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_HuskCannon")
 	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_M32")
-//	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_M99")
+	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_M99")
 	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_Mac10")
 	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_MKB42")
 	DefaultItems.Add( "KFGameHuskLauncher.KFWeapDef_PPSH")
@@ -641,9 +666,10 @@ defaultproperties
 	DefaultItems.Add( "Armory.KFWeapDef_CZ75")
 	DefaultItems.Add( "Armory.KFWeapDef_DualMK23")
 	DefaultItems.Add( "Armory.KFWeapDef_DualTT33")
-	DefaultItems.Add( "Armory.KFWeapDef_FNFNC")
+////	DefaultItems.Add( "Armory.KFWeapDef_FNFNC")
 	DefaultItems.Add( "Armory.KFWeapDef_G3")
 	DefaultItems.Add( "Armory.KFWeapDef_Galil")
+	DefaultItems.Add( "Armory.KFWeapDef_HiPower")
 	DefaultItems.Add( "Armory.KFWeapDef_M14")
 	DefaultItems.Add( "Armory.KFWeapDef_M1Carbine")
 	DefaultItems.Add( "Armory.KFWeapDef_M4Carbine")
@@ -655,8 +681,9 @@ defaultproperties
 	DefaultItems.Add( "Armory.KFWeapDef_SVT40")
 	DefaultItems.Add( "Armory.KFWeapDef_Thermobaric")
 	DefaultItems.Add( "Armory.KFWeapDef_TT33")
-	DefaultItems.Add( "Armory.KFWeapDef_UMP")
+////	DefaultItems.Add( "Armory.KFWeapDef_UMP")
 	DefaultItems.Add( "Armory.KFWeapDef_VAL")
+	DefaultItems.Add( "Armory.KFWeapDef_XM177")
 
 /*
 	// == LordOfWar Weapon Mutator -- http://steamcommunity.com/sharedfiles/filedetails/?id=890082699 *
@@ -716,25 +743,25 @@ defaultproperties
 	DefaultItems.Add( "AKS74UMut.KFWeapDef_AKS74U")
 
 	// == Custom M14EBRs -- http://steamcommunity.com/sharedfiles/filedetails/?id=959410214 **
-//	DefaultItems.Add( "CustomM14s.KFWeapDef_CustomM14EBR")
+	DefaultItems.Add( "CustomM14s.KFWeapDef_CustomM14EBR")
 	DefaultItems.Add( "CustomM14s.KFWeapDef_IronSightM14EBR")
 
 	// == CD Weapons Mod -- http://steamcommunity.com/sharedfiles/filedetails/?id=969556681
 	DefaultItems.Add( "CDWM.KFWeapDef_AA12Dragon")
 	DefaultItems.Add( "CDWM.KFWeapDef_AK47")
-//	DefaultItems.Add( "CDWM.KFWeapDef_AmmoBox")
+	DefaultItems.Add( "CDWM.KFWeapDef_AmmoBox")
 	DefaultItems.Add( "CDWM.KFWeapDef_BileThrower")
 	DefaultItems.Add( "CDWM.KFWeapDef_FNC")
 	DefaultItems.Add( "CDWM.KFWeapDef_HK416")
 	DefaultItems.Add( "CDWM.KFWeapDef_M4_2")
-//	DefaultItems.Add( "CDWM.KFWeapDef_M60")
+	DefaultItems.Add( "CDWM.KFWeapDef_M60")
 	DefaultItems.Add( "CDWM.KFWeapDef_MK")
 	DefaultItems.Add( "CDWM.KFWeapDef_DualMauser")
 	DefaultItems.Add( "CDWM.KFWeapDef_Mauser")
 	DefaultItems.Add( "CDWM.KFWeapDef_NUKEAT")
 	DefaultItems.Add( "CDWM.KFWeapDef_RailGunZR2")
 	DefaultItems.Add( "CDWM.KFWeapDef_Rifle_Barret50")
-//	DefaultItems.Add( "CDWM.KFWeapDef_SVD")
+	DefaultItems.Add( "CDWM.KFWeapDef_SVD")
 	DefaultItems.Add( "CDWM.KFWeapDef_ZedTimeTBall2")
 
 	// == YeeHaw: Horzine Scientist -- http://steamcommunity.com/sharedfiles/filedetails/?id=1095651180
@@ -761,6 +788,7 @@ defaultproperties
 	DefaultItems.Add( "M99.KFWeapDef_M99")
 
 	// == Weapon Pack -- http://steamcommunity.com/sharedfiles/filedetails/?id=1147408497
+	DefaultItems.Add( "WeaponPack.KFWeapDef_AK74M")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_AmmoBox")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_AUG9mm")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_DragonBlade")
@@ -771,8 +799,10 @@ defaultproperties
 	DefaultItems.Add( "WeaponPack.KFWeapDef_M60MG")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_DualPatriot")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_Patriot")
+	DefaultItems.Add( "WeaponPack.KFWeapDef_Seeker3K")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_Skull9")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_Spas12")
+	DefaultItems.Add( "WeaponPack.KFWeapDef_Spectre")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_SVD")
 
 	// == M16M203MDC -- http://steamcommunity.com/sharedfiles/filedetails/?id=1150733214
