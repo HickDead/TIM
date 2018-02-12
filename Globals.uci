@@ -2,7 +2,7 @@
 
 
 // increment this after the mod gets uploaded to the workshop.
-`define VERSION 6
+`define VERSION 7
 
 
 `define MOD_AUTHOR HickDead

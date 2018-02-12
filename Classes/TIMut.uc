@@ -254,6 +254,11 @@ private final function AddNewItemsToConfig()
 		CustomItems.AddItem( "WeaponPack.KFWeapDef_Spectre");
 
 	case 7:
+		CustomItems.AddItem( "Hellfire.KFWeapDef_Hellfire");
+		CustomItems.AddItem( "Hellfire.KFWeapDef_HellfireDual");
+		CustomItems.AddItem( "PracGun.KFWeapDef_PracGun");
+
+	case 8:
 		`LogInfo( "Updating config");
 		SaveSettings();
 	}
@@ -787,6 +792,10 @@ defaultproperties
 	// == M99 Sniper rifle -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137411101
 	DefaultItems.Add( "M99.KFWeapDef_M99")
 
+	// == Helfire shotguns -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137952760
+	DefaultItems.Add( "Hellfire.KFWeapDef_Hellfire")
+	DefaultItems.Add( "Hellfire.KFWeapDef_HellfireDual")
+
 	// == Weapon Pack -- http://steamcommunity.com/sharedfiles/filedetails/?id=1147408497
 	DefaultItems.Add( "WeaponPack.KFWeapDef_AK74M")
 	DefaultItems.Add( "WeaponPack.KFWeapDef_AmmoBox")
@@ -808,13 +817,12 @@ defaultproperties
 	// == M16M203MDC -- http://steamcommunity.com/sharedfiles/filedetails/?id=1150733214
 	DefaultItems.Add( "M16M203MDC.KFWeapDef_M16M203MDC")
 
+	// == PracGun -- http://steamcommunity.com/sharedfiles/filedetails/?id=1219165574
+	DefaultItems.Add( "PracGun.KFWeapDef_PracGun")
+
 /*
 	// == BassCannon -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137726392
 	DefaultItems.Add( "BassCannon.KFWeapDef_BassCannon")
-
-	// == Helfire shotgun -- http://steamcommunity.com/sharedfiles/filedetails/?id=1137952760
-	DefaultItems.Add( "Hellfire.KFWeapDef_Hellfire")
-	DefaultItems.Add( "Hellfire.KFWeapDef_HellfireDual")
 
 	// == Tracer Pistols -- http://steamcommunity.com/sharedfiles/filedetails/?id=1138237412
 	DefaultItems.Add( "Tracer.KFWeapDef_Tracer")
